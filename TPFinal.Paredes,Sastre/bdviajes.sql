@@ -8,11 +8,11 @@ CREATE TABLE empresa(
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE responsable (
-    idpersona VARCHAR(15),
+    pdocumento VARCHAR(15),
     rnumeroempleado bigint AUTO_INCREMENT,
     rnumerolicencia bigint,
     PRIMARY KEY (rnumeroempleado),
-    FOREIGN KEY (idpersona) REFERENCES persona (pdocumento)
+    FOREIGN KEY (pdocumento) REFERENCES persona (pdocumento)
     ON UPDATE CASCADE
     ON DELETE CASCADE
     )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;;

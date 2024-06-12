@@ -113,6 +113,7 @@ class Persona{
 	}	
     
 
+<<<<<<< HEAD
 	public  function listar($condicion=""){
 	    $arregloPersona = null;
 		$base=new BaseDatos();
@@ -149,7 +150,42 @@ class Persona{
 		 }	
 		 return $arregloPersona;
 	}	
+=======
+	public function listar($condicion = ""){
+        $arregloPersona = null;
+        $base = new BaseDatos();
+        $consultaPersonas = "SELECT * FROM persona";
+        if ($condicion != "") {
+            $consultaPersonas .= ' WHERE ' . $condicion;
+        }
+        $consultaPersonas .= " ORDER BY apellido";
+>>>>>>> 31650923f92d67501662a8e27765a2edd5048206
 
+        if ($base->Iniciar()) {
+            if ($base->Ejecutar($consultaPersonas)) {
+                $arregloPersona = array();
+                while ($row2 = $base->Registro()) {
+                    $nroDoc = $row2['nrodoc'];
+                    $nombre = $row2['nombre'];
+                    $apellido = $row2['apellido'];
+                    $telefono = $row2['telefono'];
+
+                    $perso = new Persona();
+                    $perso->cargar($nroDoc, $nombre, $apellido, $telefono);
+                    array_push($arregloPersona, $perso);
+                }
+            } else {
+               
+                $this->setMensajeOperacion($base->getError());
+            }
+        } else {
+           
+            $this->setMensajeOperacion($base->getError());
+        }
+
+        return $arregloPersona;
+    }
+	
 
 	
 	public function insertar(){
@@ -223,4 +259,3 @@ class Persona{
 
 	
 }
-?>
