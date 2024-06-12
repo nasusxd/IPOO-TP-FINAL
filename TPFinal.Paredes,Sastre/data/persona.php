@@ -14,7 +14,7 @@ class Persona{
 		$this->pDocumento = " ";
 		$this->pNombre = " ";
 		$this->pApellido = " ";
-		$this->pTelefono = 2994584645;
+		$this->pTelefono =  0;
 		
 
 		

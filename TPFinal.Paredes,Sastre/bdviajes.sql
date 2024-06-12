@@ -8,11 +8,13 @@ CREATE TABLE empresa(
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE responsable (
+    idpersona VARCHAR(15),
     rnumeroempleado bigint AUTO_INCREMENT,
     rnumerolicencia bigint,
-	rnombre varchar(150), 
-    rapellido  varchar(150), 
-    PRIMARY KEY (rnumeroempleado)
+    PRIMARY KEY (rnumeroempleado),
+    FOREIGN KEY (idpersona) REFERENCES persona (pdocumento)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
     )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;;
 	
 CREATE TABLE viaje (
@@ -29,14 +31,22 @@ CREATE TABLE viaje (
     ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT = 1;
 	
-CREATE TABLE pasajero (
+CREATE TABLE pasajero ( 
+    pnroDoc varchar(15),
+    idviaje bigint,
+    PRIMARY KEY (pnroDoc,idviaje),
+    FOREIGN KEY (pnroDoc) REFERENCES persona (pdocumento)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (idviaje) REFERENCES viaje (idviaje)
+    ON UPDATE CASCADE ON DELETE CASCADE  
+    )ENGINE=InnoDB DEFAULT CHARSET=utf8; 
+
+ 
+  CREATE Table persona (
     pdocumento varchar(15),
     pnombre varchar(150), 
     papellido varchar(150), 
 	ptelefono int, 
-	idviaje bigint,
-    PRIMARY KEY (pdocumento),
-	FOREIGN KEY (idviaje) REFERENCES viaje (idviaje)	
-    )ENGINE=InnoDB DEFAULT CHARSET=utf8; 
- 
-  
+    PRIMARY KEY (pdocumento)
+
+  );
