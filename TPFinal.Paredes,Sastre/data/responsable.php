@@ -1,10 +1,20 @@
 <?php
-class responsable{
-    private $nombre;
-    private $apellido;
+class responsable extends Persona{
+   
+    private $nroDoc;
     private $numEmpleado;
     private $numLicencia;
     private $mensajeError;
+
+
+    public function __construct()
+	{
+        
+        
+		$this->numLicencia = "";
+		$this->numEmpleado = "";
+	}
+
 
     /**************************************/
 	/**************** SET *****************/
@@ -25,20 +35,6 @@ class responsable{
     }
 
     /**
-     * Establece el valor de apellido
-     */ 
-    public function setApellido($apellido){
-        $this->apellido = $apellido;
-    }
-
-    /**
-     * Establece el valor de nombre
-     */ 
-    public function setNombre($nombre){
-        $this->nombre = $nombre;
-    }
-
-    /**
      * Establece el valor de mensajeError
      */ 
     public function setMensajeError($mensajeError){
@@ -50,19 +46,6 @@ class responsable{
 	/**************** GET *****************/
 	/**************************************/
 
-    /**
-     * Obtiene el valor de nombre
-     */ 
-    public function getNombre(){
-        return $this->nombre;
-    }
-
-    /**
-     * Obtiene el valor de apellido
-     */ 
-    public function getApellido(){
-        return $this->apellido;
-    }
 
     /**
      * Obtiene el valor de numEmpleado
@@ -89,14 +72,6 @@ class responsable{
 	/**************************************/
 	/************** FUNCIONES *************/
 	/**************************************/
-
-	public function __construct()
-	{
-        $this->nombre = "";
-        $this->apellido = "";
-		$this->numLicencia = "";
-		$this->numEmpleado = "";
-	}
 
     public function cargar($nombre, $apellido, $numLicencia, $numEmpleado){		
         $this->setNombre($nombre);
