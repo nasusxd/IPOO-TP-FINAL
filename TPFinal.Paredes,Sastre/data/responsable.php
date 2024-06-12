@@ -1,62 +1,28 @@
 <?php
-class responsable{
-    private $nombre;
-    private $apellido;
+class responsable extends persona{
+    
     private $numEmpleado;
     private $numLicencia;
     private $mensajeError;
 
-    /**************************************/
-	/**************** SET *****************/
-	/**************************************/
-
-    /**
-     * Establece el valor de numLicencia
-     */ 
+  
     public function setNumLicencia($numLicencia){
         $this->numLicencia = $numLicencia;
     }
 
-    /**
-     * Establece el valor de numEmpleado
-     */ 
     public function setNumEmpleado($numEmpleado){
         $this->numEmpleado = $numEmpleado;
     }
 
-    /**
-     * Establece el valor de apellido
-     */ 
-    public function setApellido($apellido){
-        $this->apellido = $apellido;
-    }
+  
 
-    /**
-     * Establece el valor de nombre
-     */ 
-    public function setNombre($nombre){
-        $this->nombre = $nombre;
-    }
-
-    /**
-     * Establece el valor de mensajeError
-     */ 
+   
     public function setMensajeError($mensajeError){
         $this->mensajeError = $mensajeError;
     }
 
 
 
-    public function getNombre(){
-        return $this->nombre;
-    }
-
-    /**
-     * Obtiene el valor de apellido
-     */ 
-    public function getApellido(){
-        return $this->apellido;
-    }
  
     public function getNumEmpleado(){
         return $this->numEmpleado;
@@ -76,27 +42,22 @@ class responsable{
 
 	public function __construct()
 	{
-        $this->nombre = "";
-        $this->apellido = "";
+        parent::__construct();
 		$this->numLicencia = "";
 		$this->numEmpleado = "";
 	}
 
-    public function cargar($nombre, $apellido, $numLicencia, $numEmpleado){		
-        $this->setNombre($nombre);
-        $this->setApellido($apellido);
+    public function cargar($nroDoc,$nombre, $apellido,$telefono, $numLicencia, $numEmpleado){		
+      parent:: cargar($nroDoc,$nombre, $apellido,$telefono);
         $this->setNumLicencia($numLicencia);
         $this->setNumEmpleado($numEmpleado);
     }
-
-    /**
-     * Este modulo agrega un pasajero de la BD.
-    */
+    
     public function insertar(){
         $baseDatos = new BaseDatos();
         $resp = false;
-        $consulta = "INSERT INTO responsable (rnumerolicencia, rnombre, rapellido) 
-                    VALUES (".$this->getNumLicencia().",'".$this->getNombre()."','".$this->getApellido()."')";
+        $consulta = "INSERT INTO responsable (pdocumento,rnumerolicencia,) 
+                    VALUES (".$this->getPDocumento().",'".$this->getNumLicencia()."')";
         if($baseDatos->iniciar()){
             if($baseDatos->ejecutar($consulta)){
                 $resp = true;
@@ -109,16 +70,12 @@ class responsable{
         return $resp;
     }
 
-    /**
-     * Este modulo modifica un pasajero de la BD.
-    */
+   
     public function modificar(){
         $baseDatos = new BaseDatos();
         $resp = false;
         $consulta = "UPDATE responsable 
-                    SET rnumerolicencia = ".$this->getNumLicencia().", 
-                    rnombre = '".$this->getNombre()."', 
-                    rapellido ='".$this->getApellido()."' WHERE rnumeroempleado = ".$this->getNumEmpleado();
+                    SET rnumerolicencia = ".$this->getNumLicencia()."' WHERE rnumeroempleado = ".$this->getNumEmpleado();
         if($baseDatos->iniciar()){
             if($baseDatos->ejecutar($consulta)){
                 $resp = true;
@@ -131,9 +88,6 @@ class responsable{
         return $resp;
     }
 
-    /**
-     * Este modulo modifica un pasajero de la BD.
-    */
     public function eliminar(){
         $baseDatos = new BaseDatos();
         $resp = false;
@@ -157,8 +111,6 @@ class responsable{
 		if($baseDatos->iniciar()){
 			if($baseDatos->ejecutar($consulta)){
 				if($responsable=$baseDatos->registro()){					
-				    $this->setNombre($responsable['rnombre']);
-					$this->setApellido($responsable['rapellido']);
 					$this->setNumLicencia($responsable['rnumerolicencia']);
 					$this->setNumEmpleado($nroEmpleado);
 					$resp= true;
@@ -172,41 +124,41 @@ class responsable{
 		 return $resp;
 	}
 
-    public function listar($condicion){
-	    $resp = null;
+    public function listar($condicion = ""){
+        $resp = null;
         $baseDatos = new BaseDatos();
-		$consultaResponsable="SELECT * FROM responsable ";
-		if($condicion != ""){
-		    $consultaResponsable .=' where '.$condicion;
-		}
-		if($baseDatos->iniciar()){
-			if($baseDatos->ejecutar($consultaResponsable)){
-                $resp = [];		
-				while($responsable=$baseDatos->registro()){		
+        $consultaResponsable = "SELECT * FROM responsable";
+        if ($condicion != "") {
+            $consultaResponsable .= ' WHERE ' . $condicion;
+        }
+        if ($baseDatos->iniciar()) {
+            if ($baseDatos->ejecutar($consultaResponsable)) {
+                $resp = [];        
+                while ($responsable = $baseDatos->registro()) {        
                     $objResponsable = new responsable();
                     $objResponsable->buscar($responsable['rnumeroempleado']);
                     array_push($resp, $objResponsable);
-				}
-		 	}else{
-                $resp = false;
+                }
+            } else {
+               
                 $this->setMensajeError($baseDatos->getERROR());
-			}
-		 }else{
-            $resp = false;
+            }
+        } else {
+           
             $this->setMensajeError($baseDatos->getERROR());
-		 }		
-		 return $resp;
-	}
+        }        
+        return $resp;
+    }
 
 	public function __toString()
 	{
-		return ("El nombre del responsable del viaje es: ".$this->getNombre()."\n".
-				"El apellido del responsable del viaje es: ".$this->getApellido()."\n".
-				"El numero de empleado es: ".$this->getNumEmpleado()."\n".
-				"El numero de licencia es: ".$this->getNumLicencia()."\n");
+        $cadena = parent::__toString();
+        $cadena .="El numero de empleado es: ".$this->getNumEmpleado()."\n".
+				"El numero de licencia es: ".$this->getNumLicencia()."\n";
+		return $cadena;
+				
 	}
 
 
 
 }
-?>

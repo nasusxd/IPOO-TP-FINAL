@@ -216,8 +216,7 @@ class viaje
         if ($inicio) {
             if ($baseDatos->Ejecutar($consulta)) {
                 $arregloViaje = array();
-                while ($row2 = $baseDatos->Registro())
-                {
+                while ($row2 = $baseDatos->Registro()) {
                     $id = $row2['idviaje]'];
                     $destino = $row2['vdestino'];
                     $cantmax = $row2['vcantmaxpasajeros'];
@@ -229,8 +228,14 @@ class viaje
                     $viaje = new viaje();
                     $viaje->cargar($id, $destino, $cantmax, $objEmpresa, $objResponsable, $importe);
                     array_push($arregloViaje, $viaje);
+                }
+            } else {
+                $this->setMensajeError($baseDatos->getError());
             }
-        }else{ $this->setMensajeError($baseDatos->getError());}
-    }else{ $this->setMensajeError($baseDatos->getError());}
-}
+        } else {
+            $this->setMensajeError($baseDatos->getError());
+        }
+    }
+
+    
 }
