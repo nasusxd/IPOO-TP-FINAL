@@ -47,7 +47,7 @@ class responsable extends persona{
 		$this->numEmpleado = "";
 	}
 
-    public function cargar($nroDoc,$nombre, $apellido,$telefono, $numLicencia, $numEmpleado){		
+    public function cargar($nroDoc,$nombre, $apellido,$telefono, $numLicencia=null, $numEmpleado=null){		
       parent:: cargar($nroDoc,$nombre, $apellido,$telefono);
         $this->setNumLicencia($numLicencia);
         $this->setNumEmpleado($numEmpleado);

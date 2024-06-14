@@ -145,7 +145,7 @@ class viaje
     public function buscar($id)
     {
         $baseDatos = new BaseDatos();
-        $consulta = "Select* from viaje where idviaje=" . $id;
+        $consulta = "Select * from viaje where idviaje=" . $id;
         $resp = false;
         if ($baseDatos->Iniciar()) {
 

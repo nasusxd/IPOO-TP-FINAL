@@ -33,8 +33,8 @@ class Pasajero extends Persona{
 
 
 
-    public function cargar($nroDoc,$nombre,$apellido,$telefono,$objViaje){
-        parent:: cargar($nroDoc,$nombre,$apellido,$telefono);
+    public function cargar($nroDoc,$nombre,$apellido,$telefono,$objViaje=null){
+        parent:: cargar($nroDoc,$nombre,$apellido,$telefono,);
         $this->setObjViaje($objViaje);
     }
 

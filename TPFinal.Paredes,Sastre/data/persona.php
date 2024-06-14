@@ -113,44 +113,6 @@ class Persona{
 	}	
     
 
-<<<<<<< HEAD
-	public  function listar($condicion=""){
-	    $arregloPersona = null;
-		$base=new BaseDatos();
-		$consultaPersonas="Select * from persona ";
-		if ($condicion!=""){
-		    $consultaPersonas=$consultaPersonas.' where '.$condicion;
-		}
-		$consultaPersonas.=" order by apellido ";
-		//echo $consultaPersonas;
-		if($base->Iniciar()){
-			if($base->Ejecutar($consultaPersonas)){				
-				$arregloPersona= array();
-				while($row2=$base->Registro()){
-				    
-					$nroDoc=$row2['nrodoc'];
-					$nombre=$row2['nombre'];
-					$apellido=$row2['apellido'];
-					$telefono =$row2['telefono'];
-				
-					$perso=new Persona();
-					$perso->cargar($nroDoc,$nombre,$apellido,$telefono);
-					array_push($arregloPersona,$perso);
-	
-				}
-				
-			
-		 	}	else {
-		 			$this->setmensajeoperacion($base->getError());
-		 		
-			}
-		 }	else {
-		 		$this->setmensajeoperacion($base->getError());
-		 	
-		 }	
-		 return $arregloPersona;
-	}	
-=======
 	public function listar($condicion = ""){
         $arregloPersona = null;
         $base = new BaseDatos();
@@ -159,7 +121,6 @@ class Persona{
             $consultaPersonas .= ' WHERE ' . $condicion;
         }
         $consultaPersonas .= " ORDER BY apellido";
->>>>>>> 31650923f92d67501662a8e27765a2edd5048206
 
         if ($base->Iniciar()) {
             if ($base->Ejecutar($consultaPersonas)) {
@@ -191,26 +152,21 @@ class Persona{
 	public function insertar(){
 		$base=new BaseDatos();
 		$resp= false;
-		$consultaInsertar="INSERT INTO persona(nrodoc, apellido, nombre,telefono) 
-				VALUES (".$this->getPDocumento().",'".$this->getPApellido()."','".$this->getPNombre()."','".$this->getPTelefono()."')";
-		
-		if($base->Iniciar()){
-
-			if($id = $base->devuelveIDInsercion($consultaInsertar)){
-                $this->setPDocumento($id);
-			    $resp=  true;
-
-			}	else {
+		$consulta="INSERT INTO persona(pdocumento,pnombre,papellido,telefono) 
+				VALUES (".$this->getPDocumento()."','".$this->getPNombre()."','".$this->getPApellido()."','".$this->getPTelefono().")";
+		    if($base->iniciar()){
+				if($base->ejecutar($consulta)){
+					$resp = true;
+				}else{
 					$this->setmensajeoperacion($base->getError());
-					
-			}
-
-		} else {
+				}
+			}else{
 				$this->setmensajeoperacion($base->getError());
-			
+			}
+			return $resp;
 		}
-		return $resp;
-	}
+		
+	
 	
 	
 	
