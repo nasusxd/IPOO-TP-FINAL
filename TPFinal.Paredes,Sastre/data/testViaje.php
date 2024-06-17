@@ -129,6 +129,40 @@ function principal()
 
                 break;
             case 4:
+                echo "Ingrese número de documento del Pasajero: ";
+                $numDoc = trim(fgets(STDIN));
+
+                // Buscar la persona por número de documento
+                if ($objPersona->buscar($numDoc)) {
+                    // La persona existe, obtener sus datos
+                    $nombre = $objPersona->getPNombre();
+                    $apellido = $objPersona->getPApellido();
+                    $telefono = $objPersona->getPTelefono();
+
+                    // Solicitar número de licencia     
+                    echo "Ingrese el ID del Viaje: ";
+                    $idViaje = trim(fgets(STDIN));
+
+                    // Crear instancia de Pasajero con los datos de la persona
+                    $objPasajero->setPDocumento($numDoc);
+                    $objPasajero->setPNombre($nombre);
+                    $objPasajero->setPApellido($apellido);
+                    $objPasajero->setPTelefono($telefono);
+                    if($objViaje->buscar($idViaje)){
+                        $objPasajero->setObjViaje($objViaje);
+                    }
+                    
+
+                    // Insertar el responsable en la base de datos
+                    if ($objPasajero->insertar()) {
+                        echo "Pasajero insertado con éxito. " . $objPasajero . "\n";
+                    } else {
+                        echo "Error al insertar el responsable: " . $objPasajero->getMensajeError() . "\n";
+                    }
+                } else {
+                    echo "No se encontró una persona con el documento proporcionado.\n";
+                }
+
 
                 break;
             case 5:

@@ -42,8 +42,8 @@ class pasajero extends persona{
     public function insertar(){
         $baseDatos = new BaseDatos();
         $resp = false;
-        $consulta = "INSERT INTO pasajero (pdocumento, idviaje) 
-                    VALUES (".$this->getPDocumento()."','".$this->getObjViaje()->getIdViaje().")";
+        $consulta = "INSERT INTO pasajero (pnroDoc, idviaje) 
+                    VALUES ('".$this->getPDocumento()."',".$this->getObjViaje()->getIdViaje().")";
         if($baseDatos->iniciar()){
             if($baseDatos->ejecutar($consulta)){
                 $resp = true;
@@ -81,7 +81,7 @@ class pasajero extends persona{
     public function eliminar(){
         $baseDatos = new BaseDatos();
         $resp = false;
-        $consulta = "DELETE FROM pasajero WHERE pdocumento = ".$this->getPDocumento();
+        $consulta = "DELETE FROM pasajero WHERE nroDoc = ".$this->getPDocumento();
         if($baseDatos->iniciar()){
             if($baseDatos->ejecutar($consulta)){
                 $resp = true;
@@ -96,7 +96,7 @@ class pasajero extends persona{
 
     public function buscar($documento){
         $baseDatos = new BaseDatos();
-		$consulta="SELECT * FROM pasajero WHERE pdocumento = ".$documento;
+		$consulta="SELECT * FROM pasajero WHERE nroDoc = ".$documento;
 		$resp = false;
 		if($baseDatos->iniciar()){
 			if($baseDatos->ejecutar($consulta)){
