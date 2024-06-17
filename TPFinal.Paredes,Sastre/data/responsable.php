@@ -1,5 +1,5 @@
 <?php
-class responsable extends persona{
+class Responsable extends Persona{
     
     private $numEmpleado;
     private $numLicencia;
@@ -43,8 +43,8 @@ class responsable extends persona{
 	public function __construct()
 	{
         parent::__construct();
-		$this->numLicencia = "";
-		$this->numEmpleado = "";
+		$this->numLicencia = null;
+		$this->numEmpleado = null;
 	}
 
     public function cargar($nroDoc,$nombre, $apellido,$telefono, $numLicencia=null, $numEmpleado=null){		
@@ -56,16 +56,17 @@ class responsable extends persona{
     public function insertar(){
         $baseDatos = new BaseDatos();
         $resp = false;
-        $consulta = "INSERT INTO responsable (pdocumento,rnumerolicencia,) 
-                    VALUES (".$this->getPDocumento().",'".$this->getNumLicencia()."')";
+        $consulta = "INSERT INTO responsable (pdocumento,rnumerolicencia) 
+                    VALUES (".$this->getPDocumento().",".$this->getNumLicencia().")";
         if($baseDatos->iniciar()){
-            if($baseDatos->ejecutar($consulta)){
+            if ($id = $baseDatos->devuelveIDInsercion($consulta)){
+                $this->setNumEmpleado($id);
                 $resp = true;
-            }else{
-                $this->setMensajeError($baseDatos->getERROR());
+            } else {
+                $this->setMensajeError($baseDatos->getError());
             }
-        }else{
-            $this->setMensajeError($baseDatos->getERROR());
+        } else {
+            $this->setMensajeError($baseDatos->getError());
         }
         return $resp;
     }

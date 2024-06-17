@@ -1,5 +1,5 @@
 <?php
-class viaje
+class Viaje
 {
     private $idviaje;
     private $vdestino;
@@ -11,12 +11,12 @@ class viaje
     private $mensajeError;
     public function __construct()
     {
-        $this->idviaje = 0;
+        $this->idviaje = null;
         $this->vdestino = "";
-        $this->vcantmaxpasajeros = "";
+        $this->vcantmaxpasajeros = null;
         $this->objEmpresa = new empresa();
         $this->objResponsable = new responsable();
-        $this->vimporte = "";
+        $this->vimporte = null;
         $this->arrayObjPasajero = [];
     }
 
@@ -124,20 +124,20 @@ class viaje
 
     public function insertar()
     {
-        $baseDatos = new baseDatos();
+        $baseDatos = new BaseDatos();
         $resp = false;
-        $consulta = "INSERT INTO viaje (cdestino, vcantmaxpasajeros, idempresa, rnumeroempleado,vimporte)
-    VALUES ('" . $this->getVDestino() . "'," . $this->getVcantmaxpasajeros() . "," . $this->getObjEmpresa()->getidempresa() . "," . $this->getObjResponsable()->getNumEmpleado() . "," . $this->getVImporte() . "')";
+        $consulta = "INSERT INTO viaje (vdestino, vcantmaxpasajeros, idempresa, rnumeroempleado,vimporte)
+    VALUES ('".$this->getVDestino()."',".$this->getVcantmaxpasajeros().",".$this->getObjEmpresa()->getidempresa().",".$this->getObjResponsable()->getNumEmpleado().",".$this->getVImporte().")";
         if ($baseDatos->iniciar()) {
 
             if ($id = $baseDatos->devuelveIDInsercion($consulta)) {
                 $this->setIdviaje($id);
                 $resp = true;
             } else {
-                $this->setMensajeError($baseDatos->getERROR());
+                $this->setMensajeError($baseDatos->getError());
             }
         } else {
-            $this->setMensajeError($baseDatos->getERROR());
+            $this->setMensajeError($baseDatos->getError());
         }
         return $resp;
     }
@@ -147,10 +147,10 @@ class viaje
         $baseDatos = new BaseDatos();
         $consulta = "Select * from viaje where idviaje=" . $id;
         $resp = false;
-        if ($baseDatos->Iniciar()) {
+        if ($baseDatos->iniciar()) {
 
-            if ($baseDatos->Ejecutar($consulta)) {
-                if ($row2 = $baseDatos->Registro($consulta)) {
+            if ($baseDatos->ejecutar($consulta)) {
+                if ($row2 = $baseDatos->registro($consulta)) {
                     $this->setIdviaje($id);
                     $this->setVdestino($row2['vdestino']);
                     $this->setVcantmaxpasajeros($row2['vcantmaxpasajeros']);

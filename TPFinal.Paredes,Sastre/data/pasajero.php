@@ -1,12 +1,12 @@
 <?php
-class Pasajero extends Persona{
+class pasajero extends persona{
     
     private $objViaje;
     private $mensajeError;
 
 
     public function __construct(){
-        parent :: __construct();
+        parent::__construct();
         $this->objViaje = "";
 
     }
@@ -42,8 +42,8 @@ class Pasajero extends Persona{
     public function insertar(){
         $baseDatos = new BaseDatos();
         $resp = false;
-        $consulta = "INSERT INTO pasajero (pdocumento, pnombre, papellido, ptelefono, idviaje) 
-                    VALUES (".$this->getPDocumento().",'".$this->getPNombre()."','".$this->getPApellido()."',".$this->getPTelefono().",".$this->getObjViaje()->getIdViaje().")";
+        $consulta = "INSERT INTO pasajero (pdocumento, idviaje) 
+                    VALUES (".$this->getPDocumento()."','".$this->getObjViaje()->getIdViaje().")";
         if($baseDatos->iniciar()){
             if($baseDatos->ejecutar($consulta)){
                 $resp = true;
@@ -108,15 +108,15 @@ class Pasajero extends Persona{
 					$resp= true;
 				}
 		 	}else{
-                $this->setMensajeError($baseDatos->getERROR());
+                $this->setMensajeError($baseDatos->getError());
 			}
 		 }else{
-            $this->setMensajeError($baseDatos->getERROR());
+            $this->setMensajeError($baseDatos->getError());
 		 }		
 		 return $resp;
 	}
 
-    public function listar($condicion){
+    public function listar($condicion=""){
 	    $resp = null;
         $baseDatos = new BaseDatos();
 		$consultaPasajero="SELECT * FROM pasajero ";
@@ -127,16 +127,16 @@ class Pasajero extends Persona{
 			if($baseDatos->ejecutar($consultaPasajero)){
                 $resp = [];				
 				while($pasajero=$baseDatos->registro()){	
-					$objPasajero = new Pasajero();
+					$objPasajero = new pasajero();
 					$objPasajero->buscar($pasajero['pdocumento']);
                     array_push($resp, $objPasajero);
 				}
 		 	}else{
-                $resp = false;
+                
                 $this->setMensajeError($baseDatos->getError());
 			}
 		 }else{
-            $resp = false;
+           
             $this->setMensajeError($baseDatos->getError());
 		 }		
 		 return $resp;

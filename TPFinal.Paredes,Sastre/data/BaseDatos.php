@@ -16,10 +16,10 @@ class BaseDatos {
      */
     public function __construct(){
         $this->HOSTNAME = "127.0.0.1";
-        $this->BASEDATOS = "bd_viaje";
+        $this->BASEDATOS = "tpfinal";
         $this->USUARIO = "root";
         $this->CLAVE="";
-        $this->RESULT=0;
+        $this->RESULT=null; //HABIA CERO antes 0
         $this->QUERY="";
         $this->ERROR="";
     }
@@ -40,7 +40,7 @@ class BaseDatos {
      *
      * @return boolean
      */
-    public  function Iniciar(){
+    public  function iniciar(){
         $resp  = false;
         $conexion = mysqli_connect($this->HOSTNAME,$this->USUARIO,$this->CLAVE,$this->BASEDATOS);
         if ($conexion){
@@ -53,7 +53,8 @@ class BaseDatos {
                 $this->ERROR = mysqli_errno($conexion) . ": " .mysqli_error($conexion);
             }
         }else{
-            $this->ERROR =  mysqli_errno($conexion) . ": " .mysqli_error($conexion);
+             //$this->ERROR =  mysqli_errno($conexion) . ": " . mysqli_error($conexion);
+             $this->ERROR = mysqli_connect_errno() . ":" . mysqli_connect_error();
         }
         return $resp;
     }
@@ -65,14 +66,14 @@ class BaseDatos {
      * @param string $consulta
      * @return boolean
      */
-    public function Ejecutar($consulta){
+    public function ejecutar($consulta){
         $resp  = false;
         unset($this->ERROR);
         $this->QUERY = $consulta;
-        if(  $this->RESULT = mysqli_query( $this->CONEXION,$consulta)){
+        if($this->RESULT = mysqli_query($this->CONEXION, $consulta)){
             $resp = true;
         } else {
-            $this->ERROR =mysqli_errno( $this->CONEXION).": ". mysqli_error( $this->CONEXION);
+            $this->ERROR = mysqli_errno($this->CONEXION).": ". mysqli_error($this->CONEXION);
         }
         return $resp;
     }
@@ -83,7 +84,7 @@ class BaseDatos {
      *
      * @return boolean
      */
-    public function Registro() {
+    public function registro() {
         $resp = null;
         if ($this->RESULT){
             unset($this->ERROR);
@@ -113,7 +114,7 @@ class BaseDatos {
             $id = mysqli_insert_id($this->CONEXION);
             $resp =  $id;
         } else {
-            $this->ERROR =mysqli_errno( $this->CONEXION) . ": " . mysqli_error( $this->CONEXION);
+            $this->ERROR =mysqli_errno($this->CONEXION) . ": " . mysqli_error($this->CONEXION);
            
         }
     return $resp;

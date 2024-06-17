@@ -7,9 +7,9 @@ class empresa
     private $mensajeError;
 
 
-    public function setidempresa($identificacion)
+    public function setidempresa($idempresa)
     {
-        $this->idempresa = $identificacion;
+        $this->idempresa = $idempresa;
     }
 
     public function setNombre($nombre)
@@ -56,14 +56,14 @@ class empresa
 
     public function __construct()
     {
-        $this->idempresa = 0;
+        $this->idempresa = null;
         $this->nombre = "";
         $this->direccion = "";
     }
 
-    public function cargar($idEmpresa, $nombre, $direccion)
+    public function cargar($idempresa, $nombre, $direccion)
     {
-        $this->setidempresa($idEmpresa);
+        $this->setidempresa($idempresa);
         $this->setNombre($nombre);
         $this->setDireccion($direccion);
     }
@@ -74,7 +74,7 @@ class empresa
         $baseDatos = new BaseDatos();
         $resp = false;
         $consulta = "INSERT INTO empresa (enombre, edireccion) 
-                    VALUES ('" . $this->getNombre() . "','" . $this->getDireccion() . "')";
+                    VALUES ('".$this->getNombre()."','".$this->getDireccion()."')";
         if ($baseDatos->iniciar()) {
 
             if ($id = $baseDatos->devuelveIDInsercion($consulta)) {
@@ -149,7 +149,7 @@ class empresa
         return $resp;
     }
 
-    public function listar($condicion)
+    public function listar($condicion = "")
     {
         $resp = null;
         $baseDatos = new BaseDatos();
@@ -161,7 +161,7 @@ class empresa
             if ($baseDatos->ejecutar($consultaEmpresa)) {
                 $resp = [];
                 while ($empresa = $baseDatos->registro()) {
-                    $objEmpresa = new Empresa();
+                    $objEmpresa = new empresa();
                     $objEmpresa->buscar($empresa['idempresa']);
                     array_push($resp, $objEmpresa);
                 }
