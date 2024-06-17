@@ -129,13 +129,120 @@ function principal()
 
                 break;
             case 4:
+                echo "Ingrese número de documento del Pasajero: ";
+                $numDoc = trim(fgets(STDIN));
+
+                // Buscar la persona por número de documento
+                if ($objPersona->buscar($numDoc)) {
+                    // La persona existe, obtener sus datos
+                    $nombre = $objPersona->getPNombre();
+                    $apellido = $objPersona->getPApellido();
+                    $telefono = $objPersona->getPTelefono();
+
+                    // Solicitar número de licencia     
+                    echo "Ingrese el ID del Viaje: ";
+                    $idViaje = trim(fgets(STDIN));
+
+                    // Crear instancia de Pasajero con los datos de la persona
+                    $objPasajero->setPDocumento($numDoc);
+                    $objPasajero->setPNombre($nombre);
+                    $objPasajero->setPApellido($apellido);
+                    $objPasajero->setPTelefono($telefono);
+                    if($objViaje->buscar($idViaje)){
+                        $objPasajero->setObjViaje($objViaje);
+                    }
+                    
+
+                    // Insertar el responsable en la base de datos
+                    if ($objPasajero->insertar()) {
+                        echo "Pasajero insertado con éxito. " . $objPasajero . "\n";
+                    } else {
+                        echo "Error al insertar el responsable: " . $objPasajero->getMensajeError() . "\n";
+                    }
+                } else {
+                    echo "No se encontró una persona con el documento proporcionado.\n";
+                }
+
 
                 break;
             case 5:
 
                 break;
-            case 6:
-
+            case 6: echo "ingrese el id del viaje";
+                    $id = trim(fgets(STDIN));
+                    $viaje = new Viaje();
+                    $encontrado = $viaje->Buscar($id); 
+                
+                    if($encontrado == true){
+                
+                    
+                       
+                        do{
+                            echo "\n------Ingrese dato que desea MODIFICAR del viaje------\n"
+                                ."1) Destino.\n"
+                                ."2) Cantidad Maxima de pasajeros.\n"
+                                ."3) Responsable.\n"
+                                ."4) Importe.\n"
+                                ."5) Tipo de asiento.\n"
+                                ."6) Ida y vuelta del viaje.\n"
+                                ."7) Pasajeros.\n"
+                                ."8) Eliminar un pasajero.\n"
+                                ."9) Agregar un pasajero.\n"
+                                ."10) Ver pasajeros del viaje.\n"
+                                ."11) Ver responsable del viaje.\n"
+                                ."12) Volver.\n";
+                                
+                            echo "Ingrese su eleccion: ";
+                            $eleccion = trim(fgets(STDIN));
+                            
+                            //llama al metodo escogido por el usuario 
+                            switch($eleccion){
+                                case 1:echo "Ingrese destino nuevo del viaje: ";
+                                $destino = trim(fgets(STDIN));
+                                            if(verificarDestinoViaje($destino,$empresa)){
+                                                $viaje->setVdestino($destino);
+                                            }else{
+                                                echo "Este destino ya ha sido ingresado, intente con otro";
+                                            }
+                                            break;
+                                case 2:echo "Ingrese cantidad maxima de pasajeros nueva del viaje: ";
+                                        $cantNueva = trim(fgets(STDIN));
+                                        if($cantNueva>count($viaje->getColPasajeros())){
+                                        $viaje->setVcantmaxpasajeros($cantNueva);break;
+                                        }else{
+                                        echo "La cantidad nueva es menor a la cantidad de pasajeros ya ingresados.\n"; 
+                                        }
+                                        break;
+                                case 3: modificarResponsable($viaje);break;
+                                case 4:echo "Ingrese nuevo importe del viaje: ";
+                                            $importe = trim(fgets(STDIN));
+                                            $viaje->setVimporte($importe);
+                                            modificarBd($viaje);
+                                            break;
+                                case 5:echo "Ingrese nuevo tipo de asiento del viaje: ";
+                                            $tipoAsiento = trim(fgets(STDIN));
+                                            $viaje->setTipoAsiento($tipoAsiento);
+                                            modificarBd($viaje);
+                                            break;
+                                case 6:echo "Ingrese si es de ida y vuelta o no: ";
+                                            $idavuelta = trim(fgets(STDIN));
+                                            $viaje->setIdayvuelta($idavuelta);
+                                            modificarBd($viaje);
+                                            break;
+                                case 7: modificarDatosPasajero($viaje);break;
+                                case 8: eliminarPasajero($viaje);break;
+                                case 9: ingresarPasajeros($viaje);break;
+                                case 10: echo $viaje->stringColeccion($viaje->getColPasajeros());break;
+                                case 11: echo $viaje->getRefResponsable();break;
+                                case 12: echo "Volviendo al menú principal...\n";break;
+                                default:echo "Elección inexistente, ingrese otra\n";break;
+                            }
+                        }while($eleccion!=12);
+                        
+                    }else{    
+                        echo "\n¡Viaje no encontrado!\n";
+                    }    
+                } else { echo "\n no se encontro una empresa con ese ID ";}
                 break;
             case 7:
 

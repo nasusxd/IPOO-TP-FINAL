@@ -236,6 +236,5 @@ class Viaje
             $this->setMensajeError($baseDatos->getError());
         }
     }
-
     
 }
