@@ -152,10 +152,11 @@ class Responsable extends Persona{
     }
 
 	public function __toString()
-	{
-        $cadena = parent::__toString();
+	{$cadena=">>>>>>>>>>>>>>>>>>>>>>>>>>Datos Responsable<<<<<<<<<<<<<<<<<<<<<<<<<";
+        $cadena .= parent::__toString();
         $cadena .="El numero de empleado es: ".$this->getNumEmpleado()."\n".
 				"El numero de licencia es: ".$this->getNumLicencia()."\n";
+                $cadena.=">>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<";
 		return $cadena;
 				
 	}

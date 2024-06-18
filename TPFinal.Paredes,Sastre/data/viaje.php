@@ -127,7 +127,7 @@ class Viaje
         $baseDatos = new BaseDatos();
         $resp = false;
         $consulta = "INSERT INTO viaje (vdestino, vcantmaxpasajeros, idempresa, rnumeroempleado,vimporte)
-    VALUES ('".$this->getVDestino()."',".$this->getVcantmaxpasajeros().",".$this->getObjEmpresa()->getidempresa().",".$this->getObjResponsable()->getNumEmpleado().",".$this->getVImporte().")";
+    VALUES ('" . $this->getVDestino() . "'," . $this->getVcantmaxpasajeros() . "," . $this->getObjEmpresa()->getidempresa() . "," . $this->getObjResponsable()->getNumEmpleado() . "," . $this->getVImporte() . ")";
         if ($baseDatos->iniciar()) {
 
             if ($id = $baseDatos->devuelveIDInsercion($consulta)) {
@@ -235,6 +235,28 @@ class Viaje
         } else {
             $this->setMensajeError($baseDatos->getError());
         }
+        return $arregloViaje;
+    }
+    public function __toString()
+    {
+        $lista=coleccion_a_cadena($this->getArrayObjPasajero());
+        $cadena = "\n>>>>>>>>>>>>>>>>>>>>>>>>>>Datos Viaje<<<<<<<<<<<<<<<<<<<<<<<<<\n" .
+            "Id del viaje " . $this->getIdviaje() . " Destino: " . $this->getVdestino() . "\n" .
+            "Cantidad de pasajeros maxima: " . $this->getVcantmaxpasajeros() . "Pertenece a la empresa: " . $this->getObjEmpresa()->getNombre() . "\n" .
+            "El Responsable es: " . $this->getObjResponsable() . "\n" .
+            "El importe del viaje es de: " . $this->getVimporte() . " pesos\n".
+            "\n>>>>>>>>>>>>>>>>>>>>>>>>>>Lista de pasajeros<<<<<<<<<<<<<<<<<<<<<<<<<\n".
+            $lista;
+        return $cadena;
     }
     
+    public function coleccion_a_cadena($coleccion)
+    {
+        $cadena = "----------------------------------------------\n";
+        foreach ($coleccion as $objeto) {
+            $cadena .= $objeto;
+            $cadena .= "----------------------------------------------\n";
+        }
+        return $cadena;
+    }
 }

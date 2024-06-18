@@ -178,8 +178,10 @@ class empresa
 
     public function __toString()
     {
-        return "Id de la empresa: " . $this->getidempresa() . "\n" .
+        return "_____________________________________________________\n".
+        "Id de la empresa: " . $this->getidempresa() . "\n" .
             "Nombre de la empresa: " . $this->getNombre() . "\n" .
-            "La direccion de la empresa es: " . $this->getDireccion() . "\n";
+            "La direccion de la empresa es: " . $this->getDireccion() . "\n".
+            "_____________________________________________________\n";
     }
 }
