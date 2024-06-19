@@ -85,13 +85,14 @@ function principal()
                 while($i <$cantPersona && !$yaEsta) {
                     $persona = $list[$i];
                     if($persona->getPDocumento() == $numDoc) {
-                        $esta = true;
+                        $yaEsta = true;
                         echo "\nYa hay una persona con ese dni en el sistema\n";
                     }
                     $i++;
                 }
             
                 }while($yaEsta==true);
+                $objResponsable=new responsable();
             
                 echo "ingrese el nombre: ";
                 $nombre=trim(fgets(STDIN));
@@ -99,16 +100,22 @@ function principal()
                 $apellido = trim(fgets(STDIN));
                 echo "ingrese el telefono: ";
                 $telefono= trim(fgets(STDIN));
-                $objResponsable=new responsable();
-                $objResponsable->cargar($numDoc,$nombre,$apellido,$telefono);
-                if($objResponsable->insertar()){
-                 echo "\nse cargo con exito el responsable\n";
-            
-                }else{echo $objResponsable->getMensajeError();
+                echo "ingrese numero de licencia";
+                $numLicencia = trim(fgets(STDIN));
+                $objPersona->cargar($numDoc,$nombre,$apellido,$telefono);
+                if($objPersona->insertar()){             
+                $objResponsable->cargar($numDoc,$nombre,$apellido,$telefono,$numLicencia);
+                if ($objResponsable->insertar()){
+
+                    echo "Responsable ingresado con exito\n";
+                }else{
+                    echo $objResponsable->getMensajeError();
                 }
+             }else{
+                echo $objResponsable->getMensajeError();
+             }
             
-            
-                break;
+              break;
             case 0:
                 echo "Saliendo...";
                 break;
@@ -251,15 +258,13 @@ function menuViajes(){
                 } 
                 echo "Ingrese importe del viaje: ";
                 $importeViaje = trim(fgets(STDIN));
-                $objViaje->setVdestino($destino);
-                $objViaje->setVcantmaxpasajeros($cantMaxPasajeros);
                 if($objEmpresa->buscar($idEmpresa)){
-                    $objViaje->setObjEmpresa($objEmpresa);
-                }
-                if($objResponsable->buscar($numeroEmpleado)){
-                    $objViaje->setObjResponsable($objResponsable);
-                }
-                $objViaje->setVimporte($importeViaje);
+                   if($objResponsable->buscar($numeroEmpleado)){
+                    $objViaje->cargar($destino,$cantMaxPasajeros, $objEmpresa, $objResponsable, $importeViaje); 
+                  }
+                } else {
+                  echo "La empresa o el responsable no existe ";
+                } 
                 if ($objViaje->insertar()) {
                     echo "Viaje agregado con éxito. Número de Viaje: " . $objViaje->getIdviaje() . "\n";
                 } else {

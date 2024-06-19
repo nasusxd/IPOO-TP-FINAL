@@ -47,10 +47,10 @@ class responsable extends persona{
 		$this->numEmpleado = null;
 	}
 
-    public function cargar($nroDoc,$nombre, $apellido,$telefono, $numLicencia=null, $numEmpleado=null){		
+    public function cargar($nroDoc,$nombre, $apellido,$telefono, $numLicencia=null){		
       parent:: cargar($nroDoc,$nombre,$apellido,$telefono);
         $this->setNumLicencia($numLicencia);
-        $this->setNumEmpleado($numEmpleado);
+        
     }
     
     public function insertar(){

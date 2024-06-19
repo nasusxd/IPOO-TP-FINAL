@@ -61,7 +61,7 @@ class pasajero extends persona{
         $baseDatos = new BaseDatos();
         $resp = false;
         $consulta = "UPDATE pasajero 
-                    SET pdocumento = ".$this->getPDocumento().", 
+                    SET pdocumento = '".$this->getPDocumento()."', 
                     pnombre = '".$this->getPNombre()."', 
                     papellido ='".$this->getPApellido()."', 
                     ptelefono = ".$this->getPTelefono().", 

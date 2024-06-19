@@ -112,9 +112,9 @@ class Viaje
     {
         $this->mensajeError = $mensajeError;
     }
-    public function cargar($idViaje, $vDestino, $vCantidadMax, $objEmpresa, $objResponsable, $vImporte,)
+    public function cargar($vDestino, $vCantidadMax, $objEmpresa, $objResponsable, $vImporte)
     {
-        $this->setIdViaje($idViaje);
+        
         $this->setVDestino($vDestino);
         $this->setVcantmaxpasajeros($vCantidadMax);
         $this->setObjEmpresa($objEmpresa);
