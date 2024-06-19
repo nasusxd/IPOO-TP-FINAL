@@ -61,9 +61,9 @@ class empresa
         $this->direccion = "";
     }
 
-    public function cargar($idempresa, $nombre, $direccion)
+    public function cargar( $nombre, $direccion)
     {
-        $this->setidempresa($idempresa);
+        
         $this->setNombre($nombre);
         $this->setDireccion($direccion);
     }
