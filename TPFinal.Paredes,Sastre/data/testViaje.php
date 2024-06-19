@@ -206,9 +206,13 @@ function menuViajes(){
                 }
                 //mostrando empleados     
                 $colecEmpleados = $objResponsable->listar();
-                $cadena2 = coleccion_a_cadena($colecEmpleados);
+                
                 echo "\n////// LISTA DE RESPONSABLES///////\n";
-                echo $cadena2;
+                foreach($colecEmpleados as $empleado){
+                    echo $empleado."\n";
+
+                }
+                
                 echo "\nIngrese numero de empleado: ";
                 $numeroEmpleado = trim(fgets(STDIN));
                 foreach ($colecEmpleados as $empleado) {
@@ -569,9 +573,12 @@ function opcionesDeUnViaje(){
                             $objResponsable = new responsable();
                             $list = $objResponsable->listar();
                             if(count($list)>0){
-                                $cadena=coleccion_a_cadena($list);
+                                
                                 echo "\n--------LISTA DE EMPLEADOS--------\n";
-                                echo $cadena;
+                                foreach($list as $responsable){
+                                    echo $responsable;
+                                }
+                                
                             }else{echo "\nNo hay ningun empleado cargado al sistema";}
                             break;
                         case 4:
@@ -644,7 +651,7 @@ function opcionesDeUnViaje(){
                             
                             
                     }
-                }while($ope !=0);
+                }while($ope !=0 && $ope !=0);
                               }
 function coleccion_a_cadena($coleccion)
 {

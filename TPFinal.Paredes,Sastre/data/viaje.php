@@ -240,15 +240,16 @@ class Viaje
     public function __toString()
     {
         $lista=coleccion_a_cadena($this->getArrayObjPasajero());
-        $cadena ="\n>>>>>>>>>>>>>>>>>>>>>>>>>>Datos Viaje<<<<<<<<<<<<<<<<<<<<<<<<<\n";
-        $cadena.="Id del viaje " . $this->getIdviaje(); 
-        $cadena.="Destino: " . $this->getVdestino()."\n"; 
-        $cadena.="Cantidad de pasajeros maxima: " . $this->getVcantmaxpasajeros()."\n"; 
-        $cadena.="Pertenece a la empresa: " . $this->getObjEmpresa()."\n";
-        $cadena.="El Responsable es: " . $this->getObjResponsable()."\n";
-        $cadena.= "El importe del viaje es de: " . $this->getVimporte() . " pesos\n"."\n";
-        $cadena.="\n>>>>>>>>>>>>>>>>>>>>>>>>>>Lista de pasajeros<<<<<<<<<<<<<<<<<<<<<<<<<\n".
-            $lista;
+        $cadena = "\n>>>>>>>>>>>>>>>>>>>>>>>>>>Datos Viaje<<<<<<<<<<<<<<<<<<<<<<<<<\n" ;
+        $cadena .= "Id del viaje: " . $this->getIdviaje() ."\n";
+        $cadena .=     " Destino: " . $this->getVdestino() . "\n" ;
+        $cadena .=     "Cantidad de pasajeros maxima: " . $this->getVcantmaxpasajeros() ;
+        $cadena .=   "\nDatos de la empresa a la empresa: ".
+             $this->getObjEmpresa() . "\n" ;
+             $cadena .=    "El Responsable es: " . $this->getObjResponsable() . "\n" ;
+             $cadena .=   "El importe del viaje es de: " . $this->getVimporte() . " pesos\n";
+             $cadena .=   "\n>>>>>>>>>>>>>>>>>>>>>>>>>>Lista de pasajeros<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+             $cadena.=$lista;
         return $cadena;
     }
     

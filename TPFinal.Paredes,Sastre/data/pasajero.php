@@ -42,7 +42,7 @@ class pasajero extends persona{
     public function insertar(){
         $baseDatos = new BaseDatos();
         $resp = false;
-        $consulta = "INSERT INTO pasajero (pnroDoc, idviaje) 
+        if(parent::insertar()){$consulta = "INSERT INTO pasajero (pnroDoc, idviaje) 
                     VALUES ('".$this->getPDocumento()."',".$this->getObjViaje()->getIdViaje().")";
         if($baseDatos->iniciar()){
             if($baseDatos->ejecutar($consulta)){
@@ -52,7 +52,8 @@ class pasajero extends persona{
             }
         }else{
             $this->setMensajeError($baseDatos->getERROR());
-        }
+        }}else{ echo "error al insertar!!";}
+               
         return $resp;
     }
 
@@ -60,7 +61,8 @@ class pasajero extends persona{
     public function modificar() {
         $baseDatos = new BaseDatos();
         $resp = false;
-        $objViaje = $this->getObjViaje();
+        if(parent::modificar()){
+            $objViaje = $this->getObjViaje();
         $idViaje = $objViaje->getIdviaje();
         $consulta = "UPDATE pasajero SET  idviaje = '{$idViaje}' WHERE pnroDoc =  '{$this->getPdocumento()}'";
         if ($baseDatos->iniciar()) {
@@ -72,6 +74,8 @@ class pasajero extends persona{
         } else {
             $this->setMensajeError($baseDatos->getERROR());
         }
+        }else{echo "\nerror al modificar";}
+        
         return $resp;
     }
 
@@ -117,6 +121,7 @@ class pasajero extends persona{
     public function listar($condicion=""){
 	    $resp = null;
         $baseDatos = new BaseDatos();
+
 		$consultaPasajero="SELECT * FROM pasajero ";
 		if($condicion != ""){
 		    $consultaPasajero .= " WHERE ".$condicion;
