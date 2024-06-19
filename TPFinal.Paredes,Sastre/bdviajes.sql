@@ -23,6 +23,7 @@ CREATE TABLE viaje (
     vcantmaxpasajeros int,
 	idempresa bigint,
     rnumeroempleado bigint,
+    coleccionpasajeros VARCHAR(3000),
     vimporte float,
     PRIMARY KEY (idviaje),
     FOREIGN KEY (idempresa) REFERENCES empresa (idempresa),

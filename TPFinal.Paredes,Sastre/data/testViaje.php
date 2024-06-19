@@ -196,17 +196,25 @@ function menuViajes(){
                 $cadena = coleccion_a_cadena($colecEmpresas);
                 echo "\n////// LISTA DE EMPRESAS ///////\n";
                 echo $cadena;
-                echo "Ingrese id de impresa: ";
+                 do{$sirve = false;
+                    echo "Ingrese id de empresa: ";
                 $idEmpresa = trim(fgets(STDIN));
                 foreach ($colecEmpresas as $empresa) {
-                    if ($empresa->getidempresa() !== $idEmpresa) {
-                        echo "No se encuentra la empresa\n";
-                    
+                    if ($empresa->getidempresa() == $idEmpresa) {
+                       
+                        $sirve = true;
                     }
+
+                    
                 }
+                if($sirve==false){
+                        echo "\nNo se encuentra una empresa con ese ID\n";
+                    }
+            }while($sirve==false);
+                
                 //mostrando empleados     
                 $colecEmpleados = $objResponsable->listar();
-                
+                do{$sirve = false;
                 echo "\n////// LISTA DE RESPONSABLES///////\n";
                 foreach($colecEmpleados as $empleado){
                     echo $empleado."\n";
@@ -216,11 +224,15 @@ function menuViajes(){
                 echo "\nIngrese numero de empleado: ";
                 $numeroEmpleado = trim(fgets(STDIN));
                 foreach ($colecEmpleados as $empleado) {
-                    if ($empleado->getNumEmpleado() !== $numeroEmpleado) {
-                        echo "\nNo se encuentra numero de empleado\n";
+                    if ($empleado->getNumEmpleado() == $numeroEmpleado) {
+                    
+                        $sirve=true;
                     
                     }
-                } 
+                    if($sirve==false){
+                        echo "\nNo se encuentra numero de empleado\n";
+                    }
+                } }while($sirve==false);
                 echo "\nIngrese importe del viaje: ";
                 $importeViaje = trim(fgets(STDIN));
                 if($objEmpresa->buscar($idEmpresa)){
@@ -254,7 +266,9 @@ function menuViajes(){
                 }else{echo "\nno se a encontrado un viaje con ese id";}
                 break;
             case 4: 
+               
                 $objViaje = new Viaje();
+              
                 $cadena = coleccion_a_cadena($objViaje->listar());
                 echo "\n////// LISTA DE VIAJES ///////";
                 echo $cadena;
@@ -279,6 +293,7 @@ function opcionesDeUnViaje(){
     $id = trim(fgets(STDIN));
     if ($objViaje->buscar($id)) {
         do {
+           
             echo "\n*+*+*+*+*+*+*+*+*+*+*+* \n";
             echo "\n menu de Viaje ID: $id";
             echo "\n1.Cambiar destino";
@@ -663,5 +678,7 @@ function coleccion_a_cadena($coleccion)
 }
 
 
+
 //PROGRAMA PRINCIPAL
 principal();
+
