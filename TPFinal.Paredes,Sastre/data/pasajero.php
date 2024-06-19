@@ -61,11 +61,11 @@ class pasajero extends persona{
         $baseDatos = new BaseDatos();
         $resp = false;
         $consulta = "UPDATE pasajero 
-                    SET pdocumento = '".$this->getPDocumento()."', 
+                    SET pnrodoc = '".$this->getPDocumento()."', 
                     pnombre = '".$this->getPNombre()."', 
                     papellido ='".$this->getPApellido()."', 
                     ptelefono = ".$this->getPTelefono().", 
-                    idviaje = ".$this->getObjViaje()->getIdViaje()." WHERE pdocumento = ".$this->getPDocumento();
+                    idviaje = ".$this->getObjViaje()->getIdViaje()." WHERE pnroDoc = ".$this->getPDocumento();
         if($baseDatos->iniciar()){
             if($baseDatos->ejecutar($consulta)){
                 $resp = true;
@@ -81,7 +81,7 @@ class pasajero extends persona{
     public function eliminar(){
         $baseDatos = new BaseDatos();
         $resp = false;
-        $consulta = "DELETE FROM pasajero WHERE nroDoc = ".$this->getPDocumento();
+        $consulta = "DELETE FROM pasajero WHERE pnroDoc = ".$this->getPDocumento();
         if($baseDatos->iniciar()){
             if($baseDatos->ejecutar($consulta)){
                 $resp = true;
@@ -96,7 +96,7 @@ class pasajero extends persona{
 
     public function buscar($documento){
         $baseDatos = new BaseDatos();
-		$consulta="SELECT * FROM pasajero WHERE nroDoc = ".$documento;
+		$consulta="SELECT * FROM pasajero WHERE pnroDoc = ".$documento;
 		$resp = false;
 		if($baseDatos->iniciar()){
 			if($baseDatos->ejecutar($consulta)){
@@ -121,14 +121,14 @@ class pasajero extends persona{
         $baseDatos = new BaseDatos();
 		$consultaPasajero="SELECT * FROM pasajero ";
 		if($condicion != ""){
-		    $consultaPasajero .= " where ".$condicion;
+		    $consultaPasajero .= " WHERE ".$condicion;
 		}
 		if($baseDatos->iniciar()){
 			if($baseDatos->ejecutar($consultaPasajero)){
                 $resp = [];				
 				while($pasajero=$baseDatos->registro()){	
 					$objPasajero = new pasajero();
-					$objPasajero->buscar($pasajero['pdocumento']);
+					$objPasajero->buscar($pasajero['pnroDoc']);
                     array_push($resp, $objPasajero);
 				}
 		 	}else{

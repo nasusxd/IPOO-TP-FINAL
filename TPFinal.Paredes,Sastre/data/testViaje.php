@@ -388,7 +388,11 @@ function opcionesDeUnViaje(){
                     break;
                 case 5:
                     $cadena = "\n>>>>>>>>>>>>>>>>>>>>>>>>>>Lista de pasajeros<<<<<<<<<<<<<<<<<<<<<<<<<\n";
-                    $cadena.= coleccion_a_cadena($objViaje->getArrayObjPasajero());
+                    $objPasajero=new pasajero();
+                    
+                    $condicion = "idviaje=" . $objViaje->getIdviaje();
+                    $list=$objPasajero->listar( $condicion);
+                    $cadena.= coleccion_a_cadena($list);
                     echo $cadena;
                     break;
                 case 6:
@@ -396,13 +400,16 @@ function opcionesDeUnViaje(){
                     $numDoc = trim(fgets(STDIN));
                     $esta=false;
                     $i=0;
-                    $cantPasa = count($objViaje->getArrayObjPasajero());
-                    $colecPasajeros=$objViaje->getArrayObjPasajero();
+                    $objPasajero=new pasajero();
+                    $condicion = "idviaje=" . $objViaje->getIdviaje();
+                    $list=$objPasajero->listar( $condicion);
+                    $cantPasa = count($list);
+                   
                     while($i<$cantPasa && $esta==false){
-                       $pasajero=$colecPasajeros[$i];
+                       $pasajero=$list[$i];
                        if($pasajero->getPDocumento()==$numDoc){
                            $esta=true;
-                           echo $pasajero;
+                          menuPasajero($pasajero);
                        }$i++;
                     if($esta==false){
                         echo "El pasajero no se encuentra en este viaje";
@@ -602,6 +609,56 @@ function opcionesDeUnViaje(){
                 }while($ope != 0);
                }
 
+
+               function  menuPasajero($pasajero){
+                do{
+                    echo "\n*+*+*+*+*+*+*+*+*+*+*+* \n";
+                    echo "\n menu Pasajero";
+                    echo "\n1.Cambiar nombre";
+                    echo "\n2.Cambiar apellido";
+                    echo "\n3.Cambiar Telefono";
+                    echo "\n4.Eliminar Pasajero";
+                    echo "\n0.Volver atras";
+                    echo "\n*+*+*+*+*+*+*+*+*+*+*+* \n";
+                    echo "Elija una opcion: ";
+                    $ope=trim(fgets(STDIN));
+                    switch($ope){
+                        case 1:
+                            echo "ingrese el nuevo nombre: ";
+                            $nom=trim(fgets(STDIN));
+                            $pasajero->setPNombre($nom);
+                            if($pasajero->modificar()){
+                                echo "el nombre se cambio con exito!!";
+                            }else{echo "hubo un error al cambiar el nombre";}
+                            break;
+                        case 2:
+                            echo "ingrese el nuevo apellido: ";
+                            $ape=trim(fgets(STDIN));
+                            $pasajero->setPApellido($ape);
+                            if($pasajero->modificar()){
+                                echo "el apellido se cambio con exito!!";
+                            }else{echo "hubo un error al cambiar el apellido";}
+                            break;
+                        case 3:
+                            echo "ingrese el nuevo numero de telefono: ";
+                            $tel=trim(fgets(STDIN));
+                            $pasajero->setPTelefono($tel);
+                            if($pasajero->modificar()){
+                                echo "el telefono se cambio con exito!!";
+                            }else{echo "hubo un error al cambiar el numero de telefono";}
+                            break;
+                        case 4:
+                            
+                            if($pasajero->eliminar()){
+                                echo "el pasajero se elimino con exito!!";
+                            }else{echo "hubo un error al eliminar el pasajero";}
+                            break;
+                            
+                            
+                            
+                    }
+                }while($ope !=0);
+                              }
 function coleccion_a_cadena($coleccion)
 {
     $cadena = '';
