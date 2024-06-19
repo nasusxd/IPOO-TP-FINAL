@@ -173,7 +173,7 @@ class persona{
 	public function modificar(){
 	    $resp =false; 
 	    $base=new BaseDatos();
-		$consultaModifica="UPDATE persona SET papellido='".$this->getPApellido()."',pnombre='".$this->getPNombre()."',pdocumento='". $this->getPDocumento()."',ptelefono='".$this->getPTelefono()." WHERE id".$this->getPDocumento();
+		$consultaModifica="UPDATE persona SET papellido='".$this->getPApellido()."',pnombre='".$this->getPNombre()."',pdocumento='". $this->getPDocumento()."',ptelefono='".$this->getPTelefono()." WHERE id= '" . $this->getPDocumento() . "'";
 		if($base->iniciar()){
 			if($base->ejecutar($consultaModifica)){
 			    $resp=  true;

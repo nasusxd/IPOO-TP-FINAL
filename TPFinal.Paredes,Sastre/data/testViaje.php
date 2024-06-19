@@ -326,65 +326,41 @@ function opcionesDeUnViaje(){
 
                  // Verificar si hay espacio en el viaje
                  if($cantPasa < $limite) {
-                 echo "Ingrese número de documento del Pasajero: ";
-                 $numDoc = trim(fgets(STDIN));
-                 $esta = false;
-                 $i = 0;
-                 $colecPasajeros = $objViaje->getArrayObjPasajero();
+                    do {
+                        echo "Ingrese número de documento del Pasajero: ";
+                        $numDoc = trim(fgets(STDIN));
+                        $objPersona = new persona();
+                        $yaEsta=true;
+                        if (!$objPersona->buscar($numDoc)) {
+                            // Si no existe en el sistema, proceder con el registro
+                            $yaEsta=false;
+                            $objPasajero = new pasajero();
 
-                // Verificar si el pasajero ya está en el viaje
-                 while($i < $cantPasa && !$esta) {
-                 $pasajero = $colecPasajeros[$i];
-                 if($pasajero->getPDocumento() ==$numDoc) {
-                 $esta = true;
-                 }else {
-                    echo "El pasajero ya está registrado en este viaje.\n";
-                 }
-                 $i++;
-                }
+                            echo "Ingrese el nombre: ";
+                            $nombre = trim(fgets(STDIN));
+                            echo "Ingrese el apellido: ";
+                            $apellido = trim(fgets(STDIN));
+                            echo "Ingrese el teléfono: ";
+                            $telefono = trim(fgets(STDIN));
 
-                  // Si el pasajero no está en el viaje
-                  if(!$esta) {
-                    do{
-                        $yaEsta= false;
-                        $objPersona= new persona();
-                        $list=$objPersona->listar();
-                        $i = 0;
-                        $cantPersona = count($list);
-                        while($i <$cantPersona && !$yaEsta) {
-                            $persona = $list[$i];
-                            if($persona->getPDocumento() == $numDoc) {
-                                $yaEsta = true;
-                                echo "\nYa hay una persona con ese dni en el sistema\n";
+                            $objPersona->cargar($numDoc, $nombre, $apellido, $telefono);
+                            if ($objPersona->insertar()) {
+                                $objPasajero->cargar($numDoc, $nombre, $apellido, $telefono, $objViaje);
+                                if ($objPasajero->insertar()) {
+                                    echo "\nPasajero ingresado con éxito.\n";
+                                } else {
+                                    echo $objPasajero->getMensajeError();
+                                }
+                            } else {
+                                echo $objPasajero->getMensajeError();
                             }
-                            $i++;
-                        }
-                    
-                        }while($yaEsta==true);
-                        $objPasajero=new pasajero();
-                    
-                        echo "ingrese el nombre: ";
-                        $nombre=trim(fgets(STDIN));
-                        echo "ingrese el apellido: ";
-                        $apellido = trim(fgets(STDIN));
-                        echo "ingrese el telefono: ";
-                        $telefono= trim(fgets(STDIN));
-                        $objPersona->cargar($numDoc,$nombre,$apellido,$telefono);
-                        if($objPersona->insertar()){             
-                        $objPasajero->cargar($numDoc,$nombre,$apellido,$telefono,$objViaje);
-                        if ($objPasajero->insertar()){
-        
-                            echo "\nPasajero ingresado con exito\n";
-                        }else{
-                            echo $objPasajero->getMensajeError();
-                        }
-                     }else{
-                        echo $objPasajero->getMensajeError();
-                     } 
-                     }
+                        }else{echo "ya hay una persona con ese dni en el sistema ingrese otro dni\n";}
+
+                    } while ($yaEsta); // Salir del bucle cuando $yaEsta sea false
+
                     } else {
                      echo "No hay espacio disponible en el viaje.\n";
-                   }         
+                   }
                     break;
                 case 5:
                     $cadena = "\n>>>>>>>>>>>>>>>>>>>>>>>>>>Lista de pasajeros<<<<<<<<<<<<<<<<<<<<<<<<<\n";

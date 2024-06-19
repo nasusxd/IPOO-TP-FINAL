@@ -57,26 +57,24 @@ class pasajero extends persona{
     }
 
   
-    public function modificar(){
+    public function modificar() {
         $baseDatos = new BaseDatos();
         $resp = false;
-        $consulta = "UPDATE pasajero 
-                    SET pnrodoc = '".$this->getPDocumento()."', 
-                    pnombre = '".$this->getPNombre()."', 
-                    papellido ='".$this->getPApellido()."', 
-                    ptelefono = ".$this->getPTelefono().", 
-                    idviaje = ".$this->getObjViaje()->getIdViaje()." WHERE pnroDoc = ".$this->getPDocumento();
-        if($baseDatos->iniciar()){
-            if($baseDatos->ejecutar($consulta)){
+        $objViaje = $this->getObjViaje();
+        $idViaje = $objViaje->getIdviaje();
+        $consulta = "UPDATE pasajero SET  idviaje = '{$idViaje}' WHERE pnroDoc =  '{$this->getPdocumento()}'";
+        if ($baseDatos->iniciar()) {
+            if ($baseDatos->ejecutar($consulta)) {
                 $resp = true;
-            }else{
+            } else {
                 $this->setMensajeError($baseDatos->getERROR());
             }
-        }else{
+        } else {
             $this->setMensajeError($baseDatos->getERROR());
         }
         return $resp;
     }
+
 
     public function eliminar(){
         $baseDatos = new BaseDatos();
