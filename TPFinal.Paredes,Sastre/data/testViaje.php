@@ -19,8 +19,7 @@ function opcionesPrincipales()
     echo "\n2.Administrar Empresa";
     echo "\n3.Ver lista de Empresas";
     echo "\n4.Viajes";
-    echo "\n5.Crear Responsable";
-    echo "\n6.Administrar Responsables";
+    echo "\n5.Administrar Responsables";
     echo "\n0.Salir";
     echo "\n*+*+*+*+*+*+*+*+*+*+*+* \n";
     echo "Elija una opcion: ";
@@ -74,46 +73,8 @@ function principal()
                 menuViajes();
                 break;
             case 5:
-                do{
-                $yaEsta= false;
-                echo "ingrese el num de documento:  ";
-                $numDoc= trim(fgets(STDIN));
-                $objPersona= new persona();
-                $list=$objPersona->listar();
-                $i = 0;
-                $cantPersona = count($list);
-                while($i <$cantPersona && !$yaEsta) {
-                    $persona = $list[$i];
-                    if($persona->getPDocumento() == $numDoc) {
-                        $yaEsta = true;
-                        echo "\nYa hay una persona con ese dni en el sistema\n";
-                    }
-                    $i++;
-                }
-            
-                }while($yaEsta==true);
-                $objResponsable=new responsable();
-            
-                echo "ingrese el nombre: ";
-                $nombre=trim(fgets(STDIN));
-                echo "ingrese el apellido: ";
-                $apellido = trim(fgets(STDIN));
-                echo "ingrese el telefono: ";
-                $telefono= trim(fgets(STDIN));
-                echo "ingrese numero de licencia";
-                $numLicencia = trim(fgets(STDIN));
-                $objPersona->cargar($numDoc,$nombre,$apellido,$telefono);
-                if($objPersona->insertar()){             
-                $objResponsable->cargar($numDoc,$nombre,$apellido,$telefono,$numLicencia);
-                if ($objResponsable->insertar()){
-
-                    echo "Responsable ingresado con exito\n";
-                }else{
-                    echo $objResponsable->getMensajeError();
-                }
-             }else{
-                echo $objResponsable->getMensajeError();
-             }
+                menuResponsable();
+                
             
               break;
             case 0:
@@ -486,7 +447,147 @@ function opcionesDeUnViaje(){
                    }
                 }
 
+               function  menuResponsable(){
+                do{
+                    echo "\n*+*+*+*+*+*+*+*+*+*+*+* \n";
+                    echo "\n menu Responsables";
+                    echo "\n1.Crear Responsable";
+                    echo "\n2.Modificar Responsable";
+                    echo "\n3.Lista de Responsables";
+                    echo "\n4.Eliminar Responsable";
+                    echo "\n0.Volver atras";
+                    echo "\n*+*+*+*+*+*+*+*+*+*+*+* \n";
+                    echo "Elija una opcion: ";
+                    $ope=trim(fgets(STDIN));
+                    switch($ope){
+                        case 0:
+                            echo "\nVolviendo al menu anterior...\n";
+                            break;
+                        case 1:
+                            do{
+                                $yaEsta= false;
+                                echo "ingrese el num de documento:  ";
+                                $numDoc= trim(fgets(STDIN));
+                                $objPersona= new persona();
+                                $list=$objPersona->listar();
+                                $i = 0;
+                                $cantPersona = count($list);
+                                while($i <$cantPersona && !$yaEsta) {
+                                    $persona = $list[$i];
+                                    if($persona->getPDocumento() == $numDoc) {
+                                        $yaEsta = true;
+                                        echo "\nYa hay una persona con ese dni en el sistema\n";
+                                    }
+                                    $i++;
+                                }
+                            
+                                }while($yaEsta==true);
+                                $objResponsable=new responsable();
+                            
+                                echo "ingrese el nombre: ";
+                                $nombre=trim(fgets(STDIN));
+                                echo "ingrese el apellido: ";
+                                $apellido = trim(fgets(STDIN));
+                                echo "ingrese el telefono: ";
+                                $telefono= trim(fgets(STDIN));
+                                echo "ingrese numero de licencia";
+                                $numLicencia = trim(fgets(STDIN));
+                                $objPersona->cargar($numDoc,$nombre,$apellido,$telefono);
+                                if($objPersona->insertar()){             
+                                $objResponsable->cargar($numDoc,$nombre,$apellido,$telefono,$numLicencia);
+                                if ($objResponsable->insertar()){
+                
+                                    echo "\nResponsable ingresado con exito\n";
+                                }else{
+                                    echo $objResponsable->getMensajeError();
+                                }
+                             }else{
+                                echo $objResponsable->getMensajeError();
+                             }
+                            break;
+                        case 2:
+                            echo "\ningrese el numero de empleado: ";
+                            $num=trim(fgets(STDIN));
+                            $objResponsable = new responsable();
+                            if($objResponsable->buscar($num)){
+                                do{
+                                echo "Menu del responsable id: $num\n";
+                                echo "1.cambiar Nombre\n
+                                      2.cambiar Apellido\n
+                                      3.cambiar Numero de licencia\n
+                                      4.cambiar Numero de Telefono\n
+                                      elija una opcion: ";
+                                      $ope=trim(fgets(STDIN));
+                                      switch($ope){
+                                        case 0:
+                                            echo "\nVolviendo al menu anterior...\n";
+                                            break;
+                                        case 1:
+                                            echo "ingrese el nuevo nombre: ";
+                                            $nom=trim(fgets(STDIN));
+                                            $objResponsable->setPNombre($nom);
+                                            if($objResponsable->modificar()){
+                                                echo "\nse modifico el nombre con exito";
+                                            }else{echo $objResponsable->getMensajeError();}
+                                            break;
+                                        case 2:
+                                            echo "ingrese el nuevo apellido: ";
+                                            $ape=trim(fgets(STDIN));
+                                            $objResponsable->setPApellido($ape);
+                                            if($objResponsable->modificar()){
+                                                echo "\nse modifico el apellido con exito";
+                                            }else{echo $objResponsable->getMensajeError();}
+                                            break;
+                                         case 3:
+                                            echo "ingrese otro numero de licencia: ";
+                                            $lic=trim(fgets(STDIN));
+                                            $objResponsable->setNumLicencia($lic);
+                                            if($objResponsable->modificar()){
+                                                echo "\nse modifico el numero de licencia con exito";
+                                            }else{echo $objResponsable->getMensajeError();}
+                                            break;
+                                        case 4:
+                                            echo "ingrese otro numero de telefono:  ";
+                                            $tel=trim(fgets(STDIN));
+                                            $objResponsable->setPTelefono($tel);
+                                            if($objResponsable->modificar()){
+                                                echo "\nse modifico el numero de telefono con exito";
+                                            }else{echo $objResponsable->getMensajeError();}
+                                            break;
+                                      }
+                                }while($ope !=0);
+                            }else{echo "No se encontro ningun Responsable cone se numero";}
+                            break;
+                        case 3:
+                            $objResponsable = new responsable();
+                            $list = $objResponsable->listar();
+                            if(count($list)>0){
+                                $cadena=coleccion_a_cadena($list);
+                                echo "\n--------LISTA DE EMPLEADOS--------\n";
+                                echo $cadena;
+                            }else{echo "\nNo hay ningun empleado cargado al sistema";}
+                            break;
+                        case 4:
+                            echo "\ningrese el numero de empleado: ";
+                            $num=trim(fgets(STDIN));
+                            $objResponsable = new responsable();
+                            if($objResponsable->buscar($num)){
+                                $objViaje=new Viaje();
+                                $condicion = "rnumeroempleado=" . $objResponsable->getNumEmpleado();
+                                $colecViajes = $objViaje->listar($condicion);
+                                if($colecViajes != []){
+                                    echo "El responsable esta ligado a Algun Viaje, para borrarlo debera borrar los viajes en los que se encuentre";
+                                }else{
+                                    $objResponsable->eliminar();
+                                    echo"\n el responsable se borro con exito";
+                                }
+                                
+                            }
+                            break;
+                    }
 
+                }while($ope != 0);
+               }
 
 function coleccion_a_cadena($coleccion)
 {
