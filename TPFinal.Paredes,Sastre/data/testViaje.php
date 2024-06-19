@@ -209,27 +209,27 @@ function menuViajes(){
                 $cadena2 = coleccion_a_cadena($colecEmpleados);
                 echo "\n////// LISTA DE RESPONSABLES///////\n";
                 echo $cadena2;
-                echo "Ingrese numero de empleado: ";
+                echo "\nIngrese numero de empleado: ";
                 $numeroEmpleado = trim(fgets(STDIN));
                 foreach ($colecEmpleados as $empleado) {
                     if ($empleado->getNumEmpleado() !== $numeroEmpleado) {
-                        echo "No se encuentra numero de empleado\n";
+                        echo "\nNo se encuentra numero de empleado\n";
                     
                     }
                 } 
-                echo "Ingrese importe del viaje: ";
+                echo "\nIngrese importe del viaje: ";
                 $importeViaje = trim(fgets(STDIN));
                 if($objEmpresa->buscar($idEmpresa)){
                    if($objResponsable->buscar($numeroEmpleado)){
                     $objViaje->cargar($destino,$cantMaxPasajeros, $objEmpresa, $objResponsable, $importeViaje); 
                   }
                 } else {
-                  echo "La empresa o el responsable no existe ";
+                  echo "\nLa empresa o el responsable no existe ";
                 } 
                 if ($objViaje->insertar()) {
-                    echo "Viaje agregado con éxito. Número de Viaje: " . $objViaje->getIdviaje() . "\n";
+                    echo "\nViaje agregado con éxito. Número de Viaje: " . $objViaje->getIdviaje() . "\n";
                 } else {
-                    echo "Error al insertar el Viaje: " . $objViaje->getMensajeError() . "\n";
+                    echo "\nError al insertar el Viaje: " . $objViaje->getMensajeError() . "\n";
                 }
                
 
@@ -238,8 +238,19 @@ function menuViajes(){
                 opcionesDeUnViaje();
                 break;
             case 3:
+                echo "\ningrese el ID del viaje: ";
+                $idViaje=trim(fgets(STDIN));
+                $objViaje = new Viaje();
+                if($objViaje->buscar($idViaje)){
+                    if($objViaje->eliminar()){
+                        echo "\nel viaje se elimino con exito";
+
+                    }else{ echo "\nhubo un error al eliminar el viaje";}
+
+                }else{echo "\nno se a encontrado un viaje con ese id";}
                 break;
-            case 4: $objViaje = new Viaje();
+            case 4: 
+                $objViaje = new Viaje();
                 $cadena = coleccion_a_cadena($objViaje->listar());
                 echo "\n////// LISTA DE VIAJES ///////";
                 echo $cadena;
