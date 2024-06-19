@@ -217,7 +217,7 @@ class Viaje
             if ($baseDatos->Ejecutar($consulta)) {
                 $arregloViaje = array();
                 while ($row2 = $baseDatos->Registro()) {
-                    $id = $row2['idviaje]'];
+                    $id = $row2['idviaje'];
                     $destino = $row2['vdestino'];
                     $cantmax = $row2['vcantmaxpasajeros'];
                     $objEmpresa = new empresa();
@@ -240,12 +240,14 @@ class Viaje
     public function __toString()
     {
         $lista=coleccion_a_cadena($this->getArrayObjPasajero());
-        $cadena = "\n>>>>>>>>>>>>>>>>>>>>>>>>>>Datos Viaje<<<<<<<<<<<<<<<<<<<<<<<<<\n" .
-            "Id del viaje " . $this->getIdviaje() . " Destino: " . $this->getVdestino() . "\n" .
-            "Cantidad de pasajeros maxima: " . $this->getVcantmaxpasajeros() . "Pertenece a la empresa: " . $this->getObjEmpresa()->getNombre() . "\n" .
-            "El Responsable es: " . $this->getObjResponsable() . "\n" .
-            "El importe del viaje es de: " . $this->getVimporte() . " pesos\n".
-            "\n>>>>>>>>>>>>>>>>>>>>>>>>>>Lista de pasajeros<<<<<<<<<<<<<<<<<<<<<<<<<\n".
+        $cadena ="\n>>>>>>>>>>>>>>>>>>>>>>>>>>Datos Viaje<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+        $cadena.="Id del viaje " . $this->getIdviaje(); 
+        $cadena.="Destino: " . $this->getVdestino()."\n"; 
+        $cadena.="Cantidad de pasajeros maxima: " . $this->getVcantmaxpasajeros()."\n"; 
+        $cadena.="Pertenece a la empresa: " . $this->getObjEmpresa()."\n";
+        $cadena.="El Responsable es: " . $this->getObjResponsable()."\n";
+        $cadena.= "El importe del viaje es de: " . $this->getVimporte() . " pesos\n"."\n";
+        $cadena.="\n>>>>>>>>>>>>>>>>>>>>>>>>>>Lista de pasajeros<<<<<<<<<<<<<<<<<<<<<<<<<\n".
             $lista;
         return $cadena;
     }

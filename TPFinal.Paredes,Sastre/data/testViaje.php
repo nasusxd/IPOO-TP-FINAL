@@ -254,8 +254,13 @@ function menuViajes(){
 
 ////////////// OPCIONES PARA UN VIAJE ///////////////
 function opcionesDeUnViaje(){
-    echo "Ingrese el id del viaje que desea modificar";
     $objViaje = new Viaje();
+    $arrayViaje= $objViaje->listar();
+    $cadena = coleccion_a_cadena($arrayViaje);
+    echo "\n////// LISTA DE VIAJES ///////";
+    echo $cadena."\n";
+
+    echo "Ingrese el id del viaje que desea modificar";
     $id = trim(fgets(STDIN));
     if ($objViaje->buscar($id)) {
         do {
@@ -315,68 +320,76 @@ function opcionesDeUnViaje(){
                 
                     break;
                 case 4:
-                    // Obtener la cantidad de pasajeros actual y el límite de pasajeros del viaje
-                       $cantPasa = count($objViaje->getArrayObjPasajero());
-                       $limite = $objViaje->getVCantMaxPasajeros();
+                 // Obtener la cantidad de pasajeros actual y el límite de pasajeros del viaje
+                 $cantPasa = count($objViaje->getArrayObjPasajero());
+                 $limite = $objViaje->getVCantMaxPasajeros();
 
-                    // Verificar si hay espacio en el viaje
-                    if($cantPasa < $limite) {
-                    echo "Ingrese número de documento del Pasajero: ";
-                    $numDoc = trim(fgets(STDIN));
-                    $esta = false;
-                    $i = 0;
-                    $colecPasajeros = $objViaje->getArrayObjPasajero();
+                 // Verificar si hay espacio en el viaje
+                 if($cantPasa < $limite) {
+                 echo "Ingrese número de documento del Pasajero: ";
+                 $numDoc = trim(fgets(STDIN));
+                 $esta = false;
+                 $i = 0;
+                 $colecPasajeros = $objViaje->getArrayObjPasajero();
 
-                   // Verificar si el pasajero ya está en el viaje
-                   while($i < $cantPasa && !$esta) {
-                   $pasajero = $colecPasajeros[$i];
-                   if($pasajero->getPDocumento() == $numDoc) {
-                   $esta = true;
+                // Verificar si el pasajero ya está en el viaje
+                 while($i < $cantPasa && !$esta) {
+                 $pasajero = $colecPasajeros[$i];
+                 if($pasajero->getPDocumento() ==$numDoc) {
+                 $esta = true;
+                 }else {
+                    echo "El pasajero ya está registrado en este viaje.\n";
                  }
-                $i++;
-            }
+                 $i++;
+                }
 
-                 // Si el pasajero no está en el viaje
-                if(!$esta) {
-                $objPasajero = new pasajero();
-                $objPersona = new persona();
-
-            
-                if ($objPersona->buscar($numDoc)) {
-               
-                $nombre = $objPersona->getPNombre();
-                $apellido = $objPersona->getPApellido();
-                $telefono = $objPersona->getPTelefono();
-
-               $objPasajero->cargar($numDoc,$nombre, $apellido, $telefono, $objViaje);
-              
-                if($objPasajero->insertar()) {
-                   
-                    array_push($colecPasajeros, $objPasajero);
-
-                   
-                    $objViaje->setArrayObjPasajero($colecPasajeros);
-                    if($objViaje->modificar()){
-                        echo "Pasajero agregado exitosamente al viaje.\n";
-                    }else{echo "error al querer guardar la lista de pasajeros";}
+                  // Si el pasajero no está en el viaje
+                  if(!$esta) {
+                    do{
+                        $yaEsta= false;
+                        $objPersona= new persona();
+                        $list=$objPersona->listar();
+                        $i = 0;
+                        $cantPersona = count($list);
+                        while($i <$cantPersona && !$yaEsta) {
+                            $persona = $list[$i];
+                            if($persona->getPDocumento() == $numDoc) {
+                                $yaEsta = true;
+                                echo "\nYa hay una persona con ese dni en el sistema\n";
+                            }
+                            $i++;
+                        }
                     
+                        }while($yaEsta==true);
+                        $objPasajero=new pasajero();
+                    
+                        echo "ingrese el nombre: ";
+                        $nombre=trim(fgets(STDIN));
+                        echo "ingrese el apellido: ";
+                        $apellido = trim(fgets(STDIN));
+                        echo "ingrese el telefono: ";
+                        $telefono= trim(fgets(STDIN));
+                        $objPersona->cargar($numDoc,$nombre,$apellido,$telefono);
+                        if($objPersona->insertar()){             
+                        $objPasajero->cargar($numDoc,$nombre,$apellido,$telefono,$objViaje);
+                        if ($objPasajero->insertar()){
+        
+                            echo "\nPasajero ingresado con exito\n";
+                        }else{
+                            echo $objPasajero->getMensajeError();
+                        }
+                     }else{
+                        echo $objPasajero->getMensajeError();
+                     } 
+                     }
                     } else {
-                    echo "Error al insertar el pasajero.\n";
-                    }
-                } else {
-                   echo "No se encontró la persona con el documento proporcionado.\n";
-                  }
-                } else {
-                   echo "El pasajero ya está registrado en este viaje.\n";
-                }
-                } else {
-                  echo "No hay espacio disponible en el viaje.\n";
-                }
+                     echo "No hay espacio disponible en el viaje.\n";
+                   }         
                     break;
                 case 5:
                     $cadena = "\n>>>>>>>>>>>>>>>>>>>>>>>>>>Lista de pasajeros<<<<<<<<<<<<<<<<<<<<<<<<<\n";
-                   $cadena.= coleccion_a_cadena($objViaje->getArrayObjPasajero());
-                   echo $cadena;
+                    $cadena.= coleccion_a_cadena($objViaje->getArrayObjPasajero());
+                    echo $cadena;
                     break;
                 case 6:
                     echo "Ingrese número de documento del Pasajero: ";
