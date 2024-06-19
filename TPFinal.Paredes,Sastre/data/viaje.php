@@ -207,11 +207,11 @@ class Viaje
     {
         $arregloViaje = null;
         $baseDatos = new BaseDatos();
-        $consulta = "Select * from viaje";
+        $consulta = "SELECT * FROM viaje";
         if ($condicion != "") {
-            $consulta = $consulta . 'where' . $condicion;
+            $consulta = $consulta . ' WHERE ' . $condicion;
         }
-        $consulta .= "order by idviaje";
+        $consulta .= " ORDER BY idviaje";
         $inicio = $baseDatos->Iniciar();
         if ($inicio) {
             if ($baseDatos->Ejecutar($consulta)) {
@@ -225,7 +225,7 @@ class Viaje
                     $objResponsable = new responsable();
                     $objResponsable->buscar($row2['rnumeroempleado']);
                     $importe = $row2['vimporte'];
-                    $viaje = new viaje();
+                    $viaje = new Viaje();
                     $viaje->cargar($id, $destino, $cantmax, $objEmpresa, $objResponsable, $importe);
                     array_push($arregloViaje, $viaje);
                 }

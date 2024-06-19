@@ -1,5 +1,5 @@
 <?php
-class Responsable extends Persona{
+class responsable extends persona{
     
     private $numEmpleado;
     private $numLicencia;
@@ -48,7 +48,7 @@ class Responsable extends Persona{
 	}
 
     public function cargar($nroDoc,$nombre, $apellido,$telefono, $numLicencia=null, $numEmpleado=null){		
-      parent:: cargar($nroDoc,$nombre, $apellido,$telefono);
+      parent:: cargar($nroDoc,$nombre,$apellido,$telefono);
         $this->setNumLicencia($numLicencia);
         $this->setNumEmpleado($numEmpleado);
     }
@@ -57,7 +57,7 @@ class Responsable extends Persona{
         $baseDatos = new BaseDatos();
         $resp = false;
         $consulta = "INSERT INTO responsable (pdocumento,rnumerolicencia) 
-                    VALUES (".$this->getPDocumento().",".$this->getNumLicencia().")";
+                    VALUES ('".$this->getPDocumento()."',".$this->getNumLicencia().")";
         if($baseDatos->iniciar()){
             if ($id = $baseDatos->devuelveIDInsercion($consulta)){
                 $this->setNumEmpleado($id);
@@ -76,7 +76,7 @@ class Responsable extends Persona{
         $baseDatos = new BaseDatos();
         $resp = false;
         $consulta = "UPDATE responsable 
-                    SET rnumerolicencia = ".$this->getNumLicencia()."' WHERE rnumeroempleado = ".$this->getNumEmpleado();
+                    SET rnumerolicencia = ".$this->getNumLicencia()." WHERE rnumeroempleado = ".$this->getNumEmpleado();
         if($baseDatos->iniciar()){
             if($baseDatos->ejecutar($consulta)){
                 $resp = true;
@@ -151,12 +151,11 @@ class Responsable extends Persona{
         return $resp;
     }
 
-	public function __toString()
-	{$cadena=">>>>>>>>>>>>>>>>>>>>>>>>>>Datos Responsable<<<<<<<<<<<<<<<<<<<<<<<<<";
+	public function __toString(){$cadena="\n>>>>>>>>>>>>>>>>>>>>>>>>>>Datos Responsable<<<<<<<<<<<<<<<<<<<<<<<<<";
         $cadena .= parent::__toString();
         $cadena .="El numero de empleado es: ".$this->getNumEmpleado()."\n".
 				"El numero de licencia es: ".$this->getNumLicencia()."\n";
-                $cadena.=">>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<";
+                $cadena.=">>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<\n";
 		return $cadena;
 				
 	}

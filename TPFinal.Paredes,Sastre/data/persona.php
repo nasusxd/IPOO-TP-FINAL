@@ -120,19 +120,19 @@ class persona{
         if ($condicion != "") {
             $consultaPersonas .= ' WHERE ' . $condicion;
         }
-        $consultaPersonas .= " ORDER BY apellido";
+        $consultaPersonas .= " ORDER BY papellido";
 
         if ($base->iniciar()) {
             if ($base->ejecutar($consultaPersonas)) {
                 $arregloPersona = [];
                 while ($row2 = $base->Registro()) {
-                    $nroDoc = $row2['nrodoc'];
-                    $nombre = $row2['nombre'];
-                    $apellido = $row2['apellido'];
-                    $telefono = $row2['telefono'];
+                    $nroDoc = $row2['pdocumento'];
+                    $nombre = $row2['pnombre'];
+                    $apellido = $row2['papellido'];
+                    $telefono = $row2['ptelefono'];
 
                     $perso = new persona();
-                    $perso->cargar($nroDoc, $nombre, $apellido, $telefono);
+                    $perso->cargar($nroDoc,$nombre,$apellido,$telefono);
                     array_push($arregloPersona, $perso);
                 }
             } else {
@@ -152,8 +152,8 @@ class persona{
 	public function insertar(){
 		$base=new BaseDatos();
 		$resp= false;
-		$consulta="INSERT INTO persona(pdocumento,pnombre,papellido,telefono) 
-				VALUES (".$this->getPDocumento()."','".$this->getPNombre()."','".$this->getPApellido()."','".$this->getPTelefono().")";
+		$consulta="INSERT INTO persona(pdocumento,pnombre,papellido,ptelefono) 
+				VALUES ('".$this->getPDocumento()."','".$this->getPNombre()."','".$this->getPApellido()."',".$this->getPTelefono().")";
 		    if($base->iniciar()){
 				if($base->ejecutar($consulta)){
 					$resp = true;
@@ -173,7 +173,7 @@ class persona{
 	public function modificar(){
 	    $resp =false; 
 	    $base=new BaseDatos();
-		$consultaModifica="UPDATE persona SET apellido='".$this->getPApellido()."',nombre='".$this->getPNombre()."',nrodoc='". $this->getPDocumento()."',telefono='".$this->getPTelefono()." WHERE id".$this->getPDocumento();
+		$consultaModifica="UPDATE persona SET papellido='".$this->getPApellido()."',pnombre='".$this->getPNombre()."',pdocumento='". $this->getPDocumento()."',ptelefono='".$this->getPTelefono()." WHERE id".$this->getPDocumento();
 		if($base->iniciar()){
 			if($base->ejecutar($consultaModifica)){
 			    $resp=  true;
@@ -192,7 +192,7 @@ class persona{
 		$base=new BaseDatos();
 		$resp=false;
 		if($base->iniciar()){
-				$consultaBorra="DELETE FROM persona WHERE nrodoc=".$this->getPDocumento();
+				$consultaBorra="DELETE FROM persona WHERE pdocumento=".$this->getPDocumento();
 				if($base->ejecutar($consultaBorra)){
 				    $resp=  true;
 				}else{
