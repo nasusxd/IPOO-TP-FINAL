@@ -144,11 +144,11 @@ class pasajero extends persona{
     
 
     public function __toString(){
-        $cadena=">>>>>>>>>>>>>>>>>>>>>>>>>>Datos Pasajero<<<<<<<<<<<<<<<<<<<<<<<<<";
+        $cadena="\n>>>>>>>>>>>>>>>>>>>>>>>>>>Datos Pasajero<<<<<<<<<<<<<<<<<<<<<<<<<\n";
         $cadena .= parent::__toString();
 
          $cadena .=  "El codigo del viaje es: ".$this->getObjViaje()->getIdViaje()."\n";
-         $cadena.=">>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<";
+         $cadena.=">>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<\n";
          return $cadena;
     }
                 

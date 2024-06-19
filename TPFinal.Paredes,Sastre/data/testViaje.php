@@ -245,9 +245,9 @@ function menuViajes(){
                 }
                 //mostrando empleados     
                 $colecEmpleados = $objResponsable->listar();
-                $cadena = coleccion_a_cadena($colecEmpleados);
+                $cadena2 = coleccion_a_cadena($colecEmpleados);
                 echo "\n////// LISTA DE RESPONSABLES///////\n";
-                echo $cadena;
+                echo $cadena2;
                 echo "Ingrese numero de empleado: ";
                 $numeroEmpleado = trim(fgets(STDIN));
                 foreach ($colecEmpleados as $empleado) {

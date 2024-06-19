@@ -207,10 +207,13 @@ class persona{
 	}
 
 	public function __toString() {
-        return "\nNombre: " . $this->getPNombre() .
-            "\nApellido: " . $this->getPApellido() .
-            "\nDNI: " . $this->getPDocumento() .
-            "\nTelefono: " . $this->getPTelefono() . "\n";
+         $cadena =  "Nombre: " . $this->getPNombre()."\n";
+		 $cadena .= "Apellido: " . $this->getPApellido()."\n";
+         $cadena .= "DNI: " . $this->getPDocumento()."\n";
+         $cadena .= "Telefono: " . $this->getPTelefono()."\n";
+
+		 return $cadena;
+			
     }
 
 	
