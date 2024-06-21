@@ -566,20 +566,20 @@ function opcionesDeUnViaje(){
                                             $lic=trim(fgets(STDIN));
                                             $objResponsable->setNumLicencia($lic);
                                             if($objResponsable->modificar()){
-                                                echo "\nse modifico el numero de licencia con exito";
+                                                echo "\nse modifico el numero de licencia con exito\n";
                                             }else{echo $objResponsable->getMensajeError();}
                                             break;
                                         case 4:
-                                            echo "ingrese otro numero de telefono:  ";
+                                            echo "Ingrese otro numero de telefono:  ";
                                             $tel=trim(fgets(STDIN));
                                             $objResponsable->setPTelefono($tel);
                                             if($objResponsable->modificar()){
-                                                echo "\nse modifico el numero de telefono con exito";
+                                                echo "\nSe modifico el numero de telefono con exito\n";
                                             }else{echo $objResponsable->getMensajeError();}
                                             break;
                                       }
                                 }while($ope !=0);
-                            }else{echo "No se encontro ningun Responsable cone se numero";}
+                            }else{echo "No se encontro ningun Responsable con ese numero";}
                             break;
                         case 3:
                             $objResponsable = new responsable();
@@ -594,17 +594,18 @@ function opcionesDeUnViaje(){
                             }else{echo "\nNo hay ningun empleado cargado al sistema";}
                             break;
                         case 4:
-                            echo "\ningrese el numero de empleado: ";
+                            echo "\nIngrese numero documento del empleado: ";
                             $num=trim(fgets(STDIN));
                             $objResponsable = new responsable();
                             if($objResponsable->buscar($num)){
+
                                 $objViaje=new Viaje();
                                 $condicion = "rnumeroempleado=" . $objResponsable->getNumEmpleado();
                                 $colecViajes = $objViaje->listar($condicion);
                                 if($colecViajes != []){
                                     echo "El responsable esta ligado a Algun Viaje, para borrarlo debera borrar los viajes en los que se encuentre";
-                                }else{
-                                    $objResponsable->eliminar();
+                                }if($objResponsable->eliminar()){
+                                    
                                     echo"\n el responsable se borro con exito";
                                 }
                                 

@@ -107,18 +107,21 @@ class responsable extends persona
 
     public function eliminar()
     {
-        $baseDatos = new BaseDatos();
+        $base = new BaseDatos();
         $resp = false;
-        $consulta = "DELETE FROM responsable WHERE rnumeroempleado = " . $this->getNumEmpleado();
-        if ($baseDatos->iniciar()) {
-            if ($baseDatos->ejecutar($consulta)) {
-                $resp = true;
+        if ($base->iniciar()) {
+            $consultaBorra = 'DELETE FROM responsable WHERE rnumeroempleado =' . $this->getNumEmpleado();
+            if ($base->ejecutar($consultaBorra)) {
+                if (parent::eliminar()) {
+                    $resp = true;
+                }
             } else {
-                $this->setMensajeError($baseDatos->getERROR());
+                $this->setmensajeoperacion($base->getError());
             }
         } else {
-            $this->setMensajeError($baseDatos->getERROR());
+            $this->setmensajeoperacion($base->getError());
         }
+
         return $resp;
     }
 
