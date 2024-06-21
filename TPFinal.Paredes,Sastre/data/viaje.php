@@ -20,8 +20,10 @@ class Viaje
         $this->arrayObjPasajero = [];
     }
 
-    public function cargar($vDestino, $vCantidadMax, $objEmpresa, $objResponsable, $vImporte)
-    {
+    public function cargar($idviaje,$vDestino, $vCantidadMax, $objEmpresa, $objResponsable, $vImporte){
+        if ($idviaje != null) {
+            $this->setIdviaje($idviaje);
+        }
         
         $this->setVDestino($vDestino);
         $this->setVcantmaxpasajeros($vCantidadMax);
@@ -128,14 +130,11 @@ class Viaje
     {
         $baseDatos = new BaseDatos();
         $resp = false;
-        $empresa = $this->getObjEmpresa();
-        $idEmpresa = $empresa->getidempresa();
-        $responsable = $this->getObjResponsable();
-        $numResponsable = $responsable->getNumEmpleado();
-        $consulta = "INSERT INTO viaje(vdestino, vcantmaxpasajeros, idempresa, rnumeroempleado, vimporte) 
-        VALUES ('{$this->getVdestino()}', {$this->getVcantmaxpasajeros()}, 
-        {$idEmpresa}, {$numResponsable}, {$this->getVimporte()})";
-       
+
+        $consulta = "INSERT INTO viaje (vdestino, vcantmaxpasajeros, idempresa, rnumeroempleado, vimporte)
+        VALUES ('" . $this->getVDestino() . "'," . $this->getVcantmaxpasajeros() . "," . $this->getObjEmpresa()->getidempresa() . "," . $this->getObjResponsable()->getNumEmpleado() . "," . $this->getVImporte() . ")";
+   
+    
        if ($baseDatos->iniciar()) {
 
             if ($id = $baseDatos->devuelveIDInsercion($consulta)) {
@@ -184,7 +183,10 @@ class Viaje
     public function modificar() {
         $baseDatos = new BaseDatos();
         $resp = false;        
-        $consulta = "UPDATE viaje SET vdestino = '{$this->getVdestino()}', vcantmaxpasajeros = {$this->getVcantmaxpasajeros()}, idempresa = '{$this->getObjEmpresa()}', rnumeroempleado = '{$this->getObjResponsable()}', vimporte = {$this->getVimporte()} WHERE idviaje = {$this->getIdviaje()}";
+        $consulta = "UPDATE viaje  SET 
+                    vdestino='" . $this->getVdestino() . "', 
+                    vcantmaxpasajeros='" . $this->getVcantmaxpasajeros() . "', vimporte=" .$this->getVimporte() ." 
+                WHERE idviaje=" . $this->getIdviaje();
     
         if ($baseDatos->iniciar()) {
             if ($baseDatos->ejecutar($consulta)) {
@@ -252,7 +254,7 @@ class Viaje
                     $numeroEmpleado= $row2['rnumeroempleado'];
                     $importe = $row2['vimporte'];
                     $viaje = new Viaje();
-                    $viaje->cargar($id, $destino, $cantmax,$idEmpresa,$numeroEmpleado, $importe);
+                    $viaje->cargar($id,$destino, $cantmax,$idEmpresa,$numeroEmpleado, $importe);
                     array_push($arregloViaje, $viaje);
                 }
             } else {

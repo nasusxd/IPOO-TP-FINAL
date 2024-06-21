@@ -236,8 +236,8 @@ function menuViajes(){
                 echo "\nIngrese importe del viaje: ";
                 $importeViaje = trim(fgets(STDIN));
                 if($objEmpresa->buscar($idEmpresa)){
-                   if($objResponsable->buscar($numeroEmpleado)){
-                    $objViaje->cargar($destino,$cantMaxPasajeros, $objEmpresa, $objResponsable, $importeViaje); 
+                   if($objResponsable->buscarPorId($numeroEmpleado)){
+                    $objViaje->cargar(null,$destino,$cantMaxPasajeros, $objEmpresa, $objResponsable, $importeViaje); 
                   }
                 } else {
                   echo "\nLa empresa o el responsable no existe ";
