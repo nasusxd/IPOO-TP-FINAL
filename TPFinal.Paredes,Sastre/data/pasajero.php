@@ -102,8 +102,8 @@ class pasajero extends persona{
 		$resp = false;
 		if($baseDatos->iniciar()){
 			if($baseDatos->ejecutar($consulta)){
-				if($pasajero=$baseDatos->registro()){					
-				    $this->setPDocumento($documento);
+				if($pasajero=$baseDatos->registro()){
+                    parent::Buscar($documento);					
                     $objViaje = new viaje();
                     $objViaje->buscar($pasajero['idviaje']);
                     $this->setObjViaje($objViaje);

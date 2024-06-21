@@ -21,6 +21,133 @@ eliminar viajes, pasajeros de viaje si
 
 
 
+    public function buscar($id)
+    {
+        $baseDatos = new BaseDatos();
+        $consulta = "SELECT * FROM viaje WHERE idviaje=" . $id;
+        $resp = false;
+        if ($baseDatos->iniciar()) {
+
+            if ($baseDatos->ejecutar($consulta)) {
+                if ($row2 = $baseDatos->registro($consulta)){
+                    $objEmpresa = new empresa();
+                    $objEmpresa->buscar($row2['idempresa']);
+                    $objResponsable = new responsable(); 
+                    $objResponsable->buscar($row2['rnumeroempleado']);                
+                    $this->setIdviaje($id);                                      
+                    $this->setVdestino($row2['vdestino']);
+                    $this->setVcantmaxpasajeros($row2['vcantmaxpasajeros']);
+                    $this->setObjEmpresa($objetoEmpresa);
+                    $this->setObjResponsable($objetoResponsable);
+                    $this->setVimporte($row2['vimporte']);
+                    $resp = true;
+                }
+            } else {
+            }
+        } else {
+            $this->setMensajeError($baseDatos->getError());
+        }
+        return $resp;
+    }
+
+    public function modificar() {
+        $baseDatos = new BaseDatos();
+        $resp = false;
+        $empresa = $this->getObjempresa();
+        $empresa = $this->getObjempresa();
+        $idEmpresa = $empresa->getIdempresa();
+        $responsable = $this->getRnumeroempleado();
+        $numResponsable = $responsable->getRnumeroempleado();
+        $consulta = "UPDATE viaje SET vdestino = '{$this->getVdestino()}', vcantmaxpasajeros = {$this->getVcantmaxpasajeros()}, idempresa = {$idEmpresa}, rnumeroempleado = {$numResponsable}, vimporte = {$this->getVimporte()} WHERE idviaje = {$this->getIdviaje()}";
+    
+        if ($baseDatos->iniciar()) {
+            if ($baseDatos->ejecutar($consulta)) {
+                $resp = true;
+            } else {
+                $this->setMensajeError($baseDatos->getERROR());
+            }
+        } else {
+            $this->setMensajeError($baseDatos->getERROR());
+        }
+        return $resp;
+    }
+
+
+// insertar viejo
+
+    public function insertar()
+    {
+        $baseDatos = new BaseDatos();
+        $resp = false;
+        $consulta = "INSERT INTO viaje (vdestino, vcantmaxpasajeros, idempresa, rnumeroempleado,vimporte)
+    VALUES ('" . $this->getVDestino() . "'," . $this->getVcantmaxpasajeros() . "," . $this->getObjEmpresa()->getidempresa() . "," . $this->getObjResponsable()->getNumEmpleado() . "," . $this->getVImporte() . ")";
+        if ($baseDatos->iniciar()) {
+
+            if ($id = $baseDatos->devuelveIDInsercion($consulta)) {
+                $this->setIdviaje($id);
+                $resp = true;
+            } else {
+                $this->setMensajeError($baseDatos->getError());
+            }
+        } else {
+            $this->setMensajeError($baseDatos->getError());
+        }
+        return $resp;
+    }
+//modificar y buscar de viaje 
+
+    public function buscar($id)
+    {
+        $baseDatos = new BaseDatos();
+        $consulta = "Select * from viaje where idviaje=" . $id;
+        $resp = false;
+        if ($baseDatos->iniciar()) {
+
+            if ($baseDatos->ejecutar($consulta)) {
+                if ($row2 = $baseDatos->registro($consulta)) {
+                    $this->setIdviaje($id);
+                    $this->setVdestino($row2['vdestino']);
+                    $this->setVcantmaxpasajeros($row2['vcantmaxpasajeros']);
+                    $objEmpresa = new empresa();
+                    $objEmpresa->buscar($row2['idempresa']);
+                    $objResponsable = new responsable();
+                    $objResponsable->buscar($row2['rnumeroempleado']);
+                    $this->setVimporte($row2['vimporte']);
+                    $resp = true;
+                }
+            } else {
+            }
+        } else {
+            $this->setMensajeError($baseDatos->getError());
+        }
+        return $resp;
+    }
+
+    public function modificar()
+    {
+        $baseDatos = new BaseDatos();
+        $resp = false;
+        $consulta = "UPDATE viaje SET idempresa='" . $this->getObjEmpresa()->getidempresa() . "',vdestino= '" . $this->getVdestino() . "',vcantmaxpasajeros='" . $this->getVcantmaxpasajeros() . "',vimporte='" . $this->getVimporte() . "',rnumeroempleado='" . $this->getObjResponsable()->getNumEmpleado() . "'WHERE idviaje=" . $this->getIdviaje();
+        if ($baseDatos->Iniciar()) {
+            if ($baseDatos->Ejecutar($consulta)) {
+                $resp = true;
+            } else {
+                $this->setMensajeError($baseDatos->getError());
+            }
+        } else {
+            $this->setMensajeError($baseDatos->getError());
+        }
+        return $resp;
+    }
+
+
+
+
+
+
+
+
+
 
 
 

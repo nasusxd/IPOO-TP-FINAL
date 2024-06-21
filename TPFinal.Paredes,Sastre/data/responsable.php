@@ -122,17 +122,41 @@ class responsable extends persona
         return $resp;
     }
 
-    public function buscar($nroEmpleado)
+    public function buscar($dni)
     {
         $baseDatos = new BaseDatos();
-        $consulta = "SELECT * FROM responsable WHERE rnumeroempleado = " . $nroEmpleado;
+        $consulta = "SELECT * FROM responsable WHERE pdocumento = " . $dni;
+
+        $resp = false;
+        if ($baseDatos->iniciar()) {
+            if ($baseDatos->ejecutar($consulta)) {
+                if ($responsable = $baseDatos->registro()) {
+                    parent::Buscar($dni);
+                    $this->setNumLicencia($responsable['rnumerolicencia']);
+                    $this->setNumEmpleado($responsable['rnumeroempleado']);
+                    $resp = true;
+                }
+            } else {
+                $this->setMensajeError($baseDatos->getERROR());
+            }
+        } else {
+            $this->setMensajeError($baseDatos->getERROR());
+        }
+        return $resp;
+    }
+
+
+    public function buscarPorId($numEmpleado)
+    {
+        $baseDatos = new BaseDatos();
+        $consulta = "SELECT * FROM responsable WHERE rnumeroempleado= " .$numEmpleado;
 
         $resp = false;
         if ($baseDatos->iniciar()) {
             if ($baseDatos->ejecutar($consulta)) {
                 if ($responsable = $baseDatos->registro()) {
                     $this->setNumLicencia($responsable['rnumerolicencia']);
-                    $this->setNumEmpleado($nroEmpleado);
+                    $this->setNumEmpleado($numEmpleado);
                     $resp = true;
                 }
             } else {
@@ -152,12 +176,13 @@ class responsable extends persona
         if ($condicion != "") {
             $consultaResponsable .= ' WHERE ' . $condicion;
         }
+        $consultaResponsable .=" ORDER BY rnumeroempleado";
         if ($baseDatos->iniciar()) {
             if ($baseDatos->ejecutar($consultaResponsable)) {
                 $resp = [];
                 while ($responsable = $baseDatos->registro()) {
                     $objResponsable = new responsable();
-                    $objResponsable->buscar($responsable['rnumeroempleado']);
+                    $objResponsable->buscar($responsable['pdocumento']);
                     
                     array_push($resp, $objResponsable);
                 }

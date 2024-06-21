@@ -274,7 +274,7 @@ function opcionesDeUnViaje(){
     $cadena = coleccion_a_cadena($arrayViaje);
     echo "\n////// LISTA DE VIAJES ///////";
     echo $cadena."\n";
-
+    
     echo "Ingrese el id del viaje que desea modificar";
     $id = trim(fgets(STDIN));
     if ($objViaje->buscar($id)) {
@@ -300,6 +300,7 @@ function opcionesDeUnViaje(){
                     echo "\nVolviendo al menu anterior...\n";
                     break;
                 case 1:
+                    echo "El destino actual es: " .$objViaje->getVdestino();
                     echo "\nIngrese el nuevo Destino: ";
                     $destino = trim(fgets(STDIN));
                     $objViaje->setVdestino($destino);
@@ -359,16 +360,14 @@ function opcionesDeUnViaje(){
                             $telefono = trim(fgets(STDIN));
 
                             $objPersona->cargar($numDoc, $nombre, $apellido, $telefono);
-                            if ($objPersona->insertar()) {
-                                $objPasajero->cargar($numDoc, $nombre, $apellido, $telefono, $objViaje);
-                                if ($objPasajero->insertar()) {
+                           
+                            $objPasajero->cargar($numDoc, $nombre, $apellido, $telefono, $objViaje);
+                            if ($objPasajero->insertar()) {
                                     echo "\nPasajero ingresado con éxito.\n";
-                                } else {
-                                    echo $objPasajero->getMensajeError();
-                                }
                             } else {
-                                echo $objPasajero->getMensajeError();
+                                    echo $objPasajero->getMensajeError();
                             }
+                            
                         }else{echo "ya hay una persona con ese dni en el sistema ingrese otro dni\n";}
 
                     } while ($yaEsta); // Salir del bucle cuando $yaEsta sea false
@@ -503,8 +502,7 @@ function opcionesDeUnViaje(){
                                 $telefono= trim(fgets(STDIN));
                                 echo "ingrese numero de licencia";
                                 $numLicencia = trim(fgets(STDIN));
-                                $objPersona->cargar($numDoc,$nombre,$apellido,$telefono);
-                                if($objPersona->insertar()){             
+                                $objPersona->cargar($numDoc,$nombre,$apellido,$telefono);            
                                 $objResponsable->cargar($numDoc,$nombre,$apellido,$telefono,$numLicencia);
                                 if ($objResponsable->insertar()){
                 
@@ -512,22 +510,21 @@ function opcionesDeUnViaje(){
                                 }else{
                                     echo $objResponsable->getMensajeError();
                                 }
-                             }else{
-                                echo $objResponsable->getMensajeError();
-                             }
+                            
                             break;
                         case 2:
                             echo "\ningrese el numero de empleado: ";
                             $num=trim(fgets(STDIN));
                             $objResponsable = new responsable();
-                            if($objResponsable->buscar($num)){
+                            if($objResponsable->buscarPorId($num)){
                                 do{
                                 echo "Menu del responsable id: $num\n";
-                                echo "1.cambiar Nombre\n
-                                      2.cambiar Apellido\n
-                                      3.cambiar Numero de licencia\n
-                                      4.cambiar Numero de Telefono\n
-                                      elija una opcion: ";
+                                echo "1.cambiar Nombre\n";
+                                echo "2.cambiar Apellido\n";
+                                echo "3.cambiar Numero de licencia\n";
+                                echo "4.cambiar Numero de Telefono\n";
+                                echo "0. Volver";
+                                echo "Elija una opcion: ";
                                       $ope=trim(fgets(STDIN));
                                       switch($ope){
                                         case 0:
