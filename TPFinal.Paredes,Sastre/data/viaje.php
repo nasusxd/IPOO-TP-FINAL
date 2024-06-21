@@ -267,7 +267,10 @@ class Viaje
     }
     public function __toString()
     {
-        $lista=coleccion_a_cadena($this->getArrayObjPasajero());
+        $objPasajero=new pasajero();
+        $condicion = "idviaje=" . $this->getIdviaje();
+        $lista=$objPasajero->listar( $condicion);
+       $list = coleccion_a_cadena($lista);
         $cadena = "\n>>>>>>>>>>>>>>>>>>>>>>>>>>Datos Viaje<<<<<<<<<<<<<<<<<<<<<<<<<\n" ;
         $cadena .= "Id del viaje: " . $this->getIdviaje() ."\n";
         $cadena .=     " Destino: " . $this->getVdestino() . "\n" ;
@@ -277,7 +280,7 @@ class Viaje
              $cadena .=    "El Responsable es: " . $this->getObjResponsable() . "\n" ;
              $cadena .=   "El importe del viaje es de: " . $this->getVimporte() . " pesos\n";
              $cadena .=   "\n>>>>>>>>>>>>>>>>>>>>>>>>>>Lista de pasajeros<<<<<<<<<<<<<<<<<<<<<<<<<\n";
-             $cadena.=$lista;
+             $cadena.=$list;
         return $cadena;
     }
     

@@ -351,8 +351,12 @@ function opcionesDeUnViaje(){
                 
                     break;
                 case 4:
-                 // Obtener la cantidad de pasajeros actual y el límite de pasajeros del viaje
-                 $cantPasa = count($objViaje->getArrayObjPasajero());
+                
+                 $objPasajero=new Pasajero();
+                 $consulta= "idviaje=" . $objViaje->getIdviaje();
+                 $list=$objPasajero->listar( $consulta);
+                 $cantPasa = count($list); // Obtener la cantidad de pasajeros actual y el límite de pasajeros del viaje
+
                  $limite = $objViaje->getVCantMaxPasajeros();
 
                  // Verificar si hay espacio en el viaje
