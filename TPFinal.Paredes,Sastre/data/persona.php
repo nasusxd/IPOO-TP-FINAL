@@ -194,6 +194,7 @@ class persona{
 		if($base->iniciar()){
 				$consultaBorra="DELETE FROM persona WHERE pdocumento=".$this->getPDocumento();
 				if($base->ejecutar($consultaBorra)){
+					
 				    $resp=  true;
 				}else{
 						$this->setmensajeoperacion($base->getError());

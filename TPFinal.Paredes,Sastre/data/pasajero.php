@@ -86,7 +86,10 @@ class pasajero extends persona{
         $consulta = "DELETE FROM pasajero WHERE pnroDoc = ".$this->getPDocumento();
         if($baseDatos->iniciar()){
             if($baseDatos->ejecutar($consulta)){
-                $resp = true;
+                if (parent::eliminar()) {
+                    $resp = true;
+                }
+               
             }else{
                 $this->setMensajeError($baseDatos->getERROR());
             }

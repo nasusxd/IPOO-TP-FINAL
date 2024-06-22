@@ -125,16 +125,16 @@ class responsable extends persona
         return $resp;
     }
 
-    public function buscar($dni)
+    public function buscar($numEmpleado)
     {
         $baseDatos = new BaseDatos();
-        $consulta = "SELECT * FROM responsable WHERE pdocumento = " . $dni;
+        $consulta = "SELECT * FROM responsable WHERE rnumeroempleado = " . $numEmpleado;
 
         $resp = false;
         if ($baseDatos->iniciar()) {
             if ($baseDatos->ejecutar($consulta)) {
                 if ($responsable = $baseDatos->registro()) {
-                    parent::Buscar($dni);
+                    parent::Buscar($responsable['pdocumento']);
                     $this->setNumLicencia($responsable['rnumerolicencia']);
                     $this->setNumEmpleado($responsable['rnumeroempleado']);
                     $resp = true;
@@ -149,28 +149,7 @@ class responsable extends persona
     }
 
 
-    public function buscarPorId($numEmpleado)
-    {
-        $baseDatos = new BaseDatos();
-        $consulta = "SELECT * FROM responsable WHERE rnumeroempleado= " .$numEmpleado;
-
-        $resp = false;
-        if ($baseDatos->iniciar()) {
-            if ($baseDatos->ejecutar($consulta)) {
-                if ($responsable = $baseDatos->registro()) {
-                    $this->setNumLicencia($responsable['rnumerolicencia']);
-                    $this->setNumEmpleado($numEmpleado);
-                    $resp = true;
-                }
-            } else {
-                $this->setMensajeError($baseDatos->getERROR());
-            }
-        } else {
-            $this->setMensajeError($baseDatos->getERROR());
-        }
-        return $resp;
-    }
-
+  
     public function listar($condicion = "")
     {
         $resp = null;
@@ -185,7 +164,7 @@ class responsable extends persona
                 $resp = [];
                 while ($responsable = $baseDatos->registro()) {
                     $objResponsable = new responsable();
-                    $objResponsable->buscar($responsable['pdocumento']);
+                    $objResponsable->buscar($responsable['rnumeroempleado']);
                     
                     array_push($resp, $objResponsable);
                 }

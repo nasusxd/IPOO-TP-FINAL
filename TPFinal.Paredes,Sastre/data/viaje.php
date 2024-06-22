@@ -20,11 +20,12 @@ class Viaje
         $this->arrayObjPasajero = [];
     }
 
-    public function cargar($idviaje,$vDestino, $vCantidadMax, $objEmpresa, $objResponsable, $vImporte){
+    public function cargar($idviaje, $vDestino, $vCantidadMax, $objEmpresa, $objResponsable, $vImporte)
+    {
         if ($idviaje != null) {
             $this->setIdviaje($idviaje);
         }
-        
+
         $this->setVDestino($vDestino);
         $this->setVcantmaxpasajeros($vCantidadMax);
         $this->setObjEmpresa($objEmpresa);
@@ -125,7 +126,7 @@ class Viaje
     {
         $this->mensajeError = $mensajeError;
     }
- 
+
     public function insertar()
     {
         $baseDatos = new BaseDatos();
@@ -133,9 +134,9 @@ class Viaje
 
         $consulta = "INSERT INTO viaje (vdestino, vcantmaxpasajeros, idempresa, rnumeroempleado, vimporte)
         VALUES ('" . $this->getVDestino() . "'," . $this->getVcantmaxpasajeros() . "," . $this->getObjEmpresa()->getidempresa() . "," . $this->getObjResponsable()->getNumEmpleado() . "," . $this->getVImporte() . ")";
-   
-    
-       if ($baseDatos->iniciar()) {
+
+
+        if ($baseDatos->iniciar()) {
 
             if ($id = $baseDatos->devuelveIDInsercion($consulta)) {
                 $this->setIdviaje($id);
@@ -149,7 +150,7 @@ class Viaje
         return $resp;
     }
 
-    
+
     public function Buscar($id)
     {
         $baseDatos = new BaseDatos();
@@ -157,12 +158,12 @@ class Viaje
         $resp = false;
         if ($baseDatos->iniciar()) {
             if ($baseDatos->ejecutar($consulta)) {
-                if ($row2 = $baseDatos->registro($consulta)){
+                if ($row2 = $baseDatos->registro($consulta)) {
                     $objEmpresa = new empresa();
                     $objEmpresa->buscar($row2['idempresa']);
-                    $objResponsable = new responsable(); 
-                    $objResponsable->buscar($row2['rnumeroempleado']);                
-                    $this->setIdviaje($id);                                      
+                    $objResponsable = new responsable();
+                    $objResponsable->buscar($row2['rnumeroempleado']);
+                    $this->setIdviaje($id);
                     $this->setVdestino($row2['vdestino']);
                     $this->setVcantmaxpasajeros($row2['vcantmaxpasajeros']);
                     $this->setObjEmpresa($objEmpresa);
@@ -180,14 +181,15 @@ class Viaje
         return $resp;
     }
 
-    public function modificar() {
+    public function modificar()
+    {
         $baseDatos = new BaseDatos();
-        $resp = false;        
+        $resp = false;
         $consulta = "UPDATE viaje  SET 
                     vdestino='" . $this->getVdestino() . "', 
-                    vcantmaxpasajeros='" . $this->getVcantmaxpasajeros() . "', vimporte=" .$this->getVimporte() ." 
+                    vcantmaxpasajeros='" . $this->getVcantmaxpasajeros() . "', vimporte=" . $this->getVimporte() . " 
                 WHERE idviaje=" . $this->getIdviaje();
-    
+
         if ($baseDatos->iniciar()) {
             if ($baseDatos->ejecutar($consulta)) {
                 $resp = true;
@@ -205,6 +207,7 @@ class Viaje
         $resp = false;
         $consulta = "DELETE FROM viaje WHERE idviaje=" . $this->getIdviaje();
         if ($baseDatos->Iniciar()) {
+            $this->eliminarPasajerosPorViaje($this->getIdviaje());
             if ($baseDatos->Ejecutar($consulta)) {
                 $resp = true;
             } else {
@@ -215,7 +218,7 @@ class Viaje
         }
         return $resp;
     }
-         //eliminar pasajero por id de viaje
+    //eliminar pasajero por id de viaje
     public function eliminarPasajerosPorViaje($idViaje)
     {
         $base = new BaseDatos();
@@ -225,8 +228,8 @@ class Viaje
             if ($base->Ejecutar($consultaBorraPasajeros)) {
                 $resp = true;
             } else {
-                $this->setMensajeError($base->getError()); 
-           }
+                $this->setMensajeError($base->getError());
+            }
         } else {
             $this->setMensajeError($base->getError());
         }
@@ -250,11 +253,11 @@ class Viaje
                     $id = $row2['idviaje'];
                     $destino = $row2['vdestino'];
                     $cantmax = $row2['vcantmaxpasajeros'];
-                    $idEmpresa =$row2['idempresa']; 
-                    $numeroEmpleado= $row2['rnumeroempleado'];
+                    $idEmpresa = $row2['idempresa'];
+                    $numeroEmpleado = $row2['rnumeroempleado'];
                     $importe = $row2['vimporte'];
                     $viaje = new Viaje();
-                    $viaje->cargar($id,$destino, $cantmax,$idEmpresa,$numeroEmpleado, $importe);
+                    $viaje->cargar($id, $destino, $cantmax, $idEmpresa, $numeroEmpleado, $importe);
                     array_push($arregloViaje, $viaje);
                 }
             } else {
@@ -267,23 +270,27 @@ class Viaje
     }
     public function __toString()
     {
-        $objPasajero=new pasajero();
+        $objPasajero = new pasajero();
         $condicion = "idviaje=" . $this->getIdviaje();
-        $lista=$objPasajero->listar( $condicion);
-       $list = coleccion_a_cadena($lista);
-        $cadena = "\n>>>>>>>>>>>>>>>>>>>>>>>>>>Datos Viaje<<<<<<<<<<<<<<<<<<<<<<<<<\n" ;
-        $cadena .= "Id del viaje: " . $this->getIdviaje() ."\n";
-        $cadena .=     " Destino: " . $this->getVdestino() . "\n" ;
-        $cadena .=     "Cantidad de pasajeros maxima: " . $this->getVcantmaxpasajeros() ;
-        $cadena .=   "\nDatos de la empresa a la empresa: ".
-             $this->getObjEmpresa() . "\n" ;
-             $cadena .=    "El Responsable es: " . $this->getObjResponsable() . "\n" ;
-             $cadena .=   "El importe del viaje es de: " . $this->getVimporte() . " pesos\n";
-             $cadena .=   "\n>>>>>>>>>>>>>>>>>>>>>>>>>>Lista de pasajeros<<<<<<<<<<<<<<<<<<<<<<<<<\n";
-             $cadena.=$list;
+        $lista = $objPasajero->listar($condicion);
+        if (count($lista) > 0) {
+            $list = "\n>>>>>>>>>>>>>>>>>>>>>>>>>>Lista de pasajeros<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+            $list .= coleccion_a_cadena($lista);
+        } else {
+            $list = "\nLISTA DE PASAJEROS VACIA\n";
+        }
+        $cadena = "\n>>>>>>>>>>>>>>>>>>>>>>>>>>Datos Viaje<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+        $cadena .= "Id del viaje: " . $this->getIdviaje() . "\n";
+        $cadena .=     " Destino: " . $this->getVdestino() . "\n";
+        $cadena .=     "Cantidad de pasajeros maxima: " . $this->getVcantmaxpasajeros();
+        $cadena .=   "\nDatos de la empresa a la empresa: \n" .
+            $this->getObjEmpresa() . "\n";
+        $cadena .=    "El Responsable es: " . $this->getObjResponsable() . "\n";
+        $cadena .=   "El importe del viaje es de: " . $this->getVimporte() . " pesos\n";
+        $cadena .= $list;
         return $cadena;
     }
-    
+
     public function coleccion_a_cadena($coleccion)
     {
         $cadena = "----------------------------------------------\n";
