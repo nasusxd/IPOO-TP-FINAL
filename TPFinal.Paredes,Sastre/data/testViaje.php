@@ -519,7 +519,7 @@ function opcionesDeUnViaje(){
                                 $apellido = trim(fgets(STDIN));
                                 echo "ingrese el telefono: ";
                                 $telefono= trim(fgets(STDIN));
-                                echo "ingrese numero de licencia";
+                                echo "ingrese numero de licencia: ";
                                 $numLicencia = trim(fgets(STDIN));
                                 $objPersona->cargar($numDoc,$nombre,$apellido,$telefono);            
                                 $objResponsable->cargar($numDoc,$nombre,$apellido,$telefono,$numLicencia);
