@@ -224,7 +224,10 @@ class Viaje
         $base = new BaseDatos();
         $resp = false;
         if ($base->Iniciar()) {
-            $consultaBorraPasajeros = "DELETE FROM pasajero WHERE idviaje=" . $idViaje;
+            $consultaBorraPasajeros = "DELETE pasajero, persona 
+            FROM pasajero
+            INNER JOIN persona ON pasajero.pnroDoc = persona.pdocumento
+            WHERE pasajero.idviaje = " . $idViaje;
             if ($base->Ejecutar($consultaBorraPasajeros)) {
                 $resp = true;
             } else {

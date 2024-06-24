@@ -550,7 +550,7 @@ function  menuResponsable()
                             echo "2.cambiar Apellido\n";
                             echo "3.cambiar Numero de licencia\n";
                             echo "4.cambiar Numero de Telefono\n";
-                            echo "0. Volver\n0";
+                            echo "0. Volver\n";
                             echo "Elija una opcion: ";
                             $ope = trim(fgets(STDIN));
                             switch ($ope) {
@@ -558,31 +558,31 @@ function  menuResponsable()
                                     echo "\nVolviendo al menu anterior...\n";
                                     break;
                                 case 1:
-                                    echo "ingrese el nuevo nombre: ";
+                                    echo "Ingrese el nuevo nombre: ";
                                     $nom = trim(fgets(STDIN));
                                     $objResponsable->setPNombre($nom);
                                     if ($objResponsable->modificar()) {
-                                        echo "\nse modifico el nombre con exito\n";
+                                        echo "\nSe modifico el nombre con exito\n";
                                     } else {
                                         echo $objResponsable->getMensajeError();
                                     }
                                     break;
                                 case 2:
-                                    echo "ingrese el nuevo apellido: ";
+                                    echo "Ingrese el nuevo apellido: ";
                                     $ape = trim(fgets(STDIN));
                                     $objResponsable->setPApellido($ape);
                                     if ($objResponsable->modificar()) {
-                                        echo "\nse modifico el apellido con exito\n";
+                                        echo "\nSe modifico el apellido con exito\n";
                                     } else {
                                         echo $objResponsable->getMensajeError();
                                     }
                                     break;
                                 case 3:
-                                    echo "ingrese otro numero de licencia: ";
+                                    echo "Ingrese otro numero de licencia: ";
                                     $lic = trim(fgets(STDIN));
                                     $objResponsable->setNumLicencia($lic);
                                     if ($objResponsable->modificar()) {
-                                        echo "\nse modifico el numero de licencia con exito\n";
+                                        echo "\nSe modifico el numero de licencia con exito\n";
                                     } else {
                                         echo $objResponsable->getMensajeError();
                                     }
