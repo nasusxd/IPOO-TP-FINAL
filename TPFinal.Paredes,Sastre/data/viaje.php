@@ -288,7 +288,7 @@ class Viaje
         $cadena .=     "Cantidad de pasajeros maxima: " . $this->getVcantmaxpasajeros();
         $cadena .=   "\nDatos de la empresa a la empresa: \n" .
             $this->getObjEmpresa() . "\n";
-        $cadena .=    "El Responsable es: " . $this->getObjResponsable() . "\n";
+        $cadena .=    "El numero de Responsable: " . $this->getObjResponsable() . "\n";
         $cadena .=   "El importe del viaje es de: " . $this->getVimporte() . " pesos\n";
         $cadena .= $list;
         return $cadena;
