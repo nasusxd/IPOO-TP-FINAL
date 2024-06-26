@@ -154,12 +154,14 @@ function menuEmpresa($objEmpresa)
                         $viaje->eliminar();
                     }
                 }
-                if($objEmpresa->eliminar()){
+                if ($objEmpresa->eliminar()) {
                     echo "La empresa se elimino con exito";
                     $ope = 0;
-                }else { echo "hubo un error al eliminar la empresa";}
-                
-                
+                } else {
+                    echo "hubo un error al eliminar la empresa";
+                }
+
+
                 break;
             default:
                 echo "\n Ingrese un numero de la lista";
@@ -228,14 +230,16 @@ function menuViajes()
                         echo "\nIngrese numero de empleado: ";
                         $numeroEmpleado = trim(fgets(STDIN));
                         foreach ($colecEmpleados as $empleado) {
-                            if ($empleado->getNumEmpleado() == $numeroEmpleado) {
+                            if($empleado->getNumEmpleado() == $numeroEmpleado) {
 
                                 $sirve = true;
                             }
-                            if ($sirve == false) {
-                                echo "\nNo se encuentra numero de empleado\n";
-                            }
+                              
                         }
+                        if(!$sirve){
+                            echo "\nNo se encuentra numero de empleado\n";
+                        }
+
                     } while ($sirve == false);
                     echo "\nIngrese importe del viaje: ";
                     $importeViaje = trim(fgets(STDIN));
@@ -271,10 +275,27 @@ function menuViajes()
                     $idViaje = trim(fgets(STDIN));
                     $objViaje = new Viaje();
                     if ($objViaje->buscar($idViaje)) {
-                        if ($objViaje->eliminar()) {
-                            echo "\nel viaje se elimino con exito";
-                        } else {
-                            echo "\nhubo un error al eliminar el viaje";
+                        $objPasajero = new pasajero();
+                        $condicion = "idviaje=" . $idViaje;
+                        $list = $objPasajero->listar($condicion);
+                        $cantPasajeros = count($list);
+                        if ($cantPasajeros > 0) {
+                            echo "Hay " . $cantPasajeros . " pasajeros en el viaje desea eliminarlo igualmente? (s/n): ";
+                            $resp = trim(fgets(STDIN));
+                            if ($resp == "s") {
+                                if ($objViaje->eliminar()) {
+                                    echo "\nel viaje y los pasajeros se eliminaron con exito";
+                                } else {
+                                    echo "\nhubo un error al eliminar el viaje";
+                                }
+                            }else{ echo "\n Su respuesta a sido NO o invalida por lo cual no se a eliminado el viaje ni sus pasajeros. ";}
+                        }else{
+                            if ($objViaje->eliminar()) {
+                                echo "\nel viaje se a eliminado con exito (No habian pasajeros dentro del mismo)";
+                            } else {
+                                echo "\nhubo un error al eliminar el viaje";
+                            }
+
                         }
                     } else {
                         echo "\nno se a encontrado un viaje con ese id";
