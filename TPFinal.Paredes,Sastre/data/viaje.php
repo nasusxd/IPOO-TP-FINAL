@@ -218,26 +218,7 @@ class Viaje
         }
         return $resp;
     }
-    //eliminar pasajero por id de viaje
-    public function eliminarPasajerosPorViaje($idViaje)
-    {
-        $base = new BaseDatos();
-        $resp = false;
-        if ($base->Iniciar()) {
-            $consultaBorraPasajeros = "DELETE pasajero, persona 
-            FROM pasajero
-            INNER JOIN persona ON pasajero.pnroDoc = persona.pdocumento
-            WHERE pasajero.idviaje = " . $idViaje;
-            if ($base->Ejecutar($consultaBorraPasajeros)) {
-                $resp = true;
-            } else {
-                $this->setMensajeError($base->getError());
-            }
-        } else {
-            $this->setMensajeError($base->getError());
-        }
-        return $resp;
-    }
+   
 
     public function listar($condicion = "")
     {
@@ -302,5 +283,26 @@ class Viaje
             $cadena .= "----------------------------------------------\n";
         }
         return $cadena;
+    } 
+    
+    //eliminar pasajero por id de viaje
+    public function eliminarPasajerosPorViaje($idViaje)
+    {
+        $base = new BaseDatos();
+        $resp = false;
+        if ($base->Iniciar()) {
+            $consultaBorraPasajeros = "DELETE pasajero, persona 
+            FROM pasajero
+            INNER JOIN persona ON pasajero.pnroDoc = persona.pdocumento
+            WHERE pasajero.idviaje = " . $idViaje;
+            if ($base->Ejecutar($consultaBorraPasajeros)) {
+                $resp = true;
+            } else {
+                $this->setMensajeError($base->getError());
+            }
+        } else {
+            $this->setMensajeError($base->getError());
+        }
+        return $resp;
     }
 }

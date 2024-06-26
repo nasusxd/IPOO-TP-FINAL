@@ -154,8 +154,12 @@ function menuEmpresa($objEmpresa)
                         $viaje->eliminar();
                     }
                 }
-                $objEmpresa->eliminar();
-                echo "La empresa se elimino con exito";
+                if($objEmpresa->eliminar()){
+                    echo "La empresa se elimino con exito";
+                    $ope = 0;
+                }else { echo "hubo un error al eliminar la empresa";}
+                
+                
                 break;
             default:
                 echo "\n Ingrese un numero de la lista";
@@ -309,7 +313,6 @@ function opcionesDeUnViaje()
             echo "\n7.Ver datos Responsable";
             echo "\n8.Cambiar de Responsable";
             echo "\n0.Volver atras";
-            echo "\nACLARACION no se puede cambiar la empresa y tampoco se puede eliminar el responsable";
             echo "\n*+*+*+*+*+*+*+*+*+*+*+* \n";
             echo "\nElija una opcion: ";
             $ope = trim(fgets(STDIN));
